@@ -1,109 +1,329 @@
 "use client";
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ChefHat, Utensils, Heart, Calendar } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Instagram, Facebook, Twitter, ChevronUp, ChevronDown,
+  Leaf, Info, MessageSquare, HelpCircle, Mail, MapPin, Phone
+} from 'lucide-react';
 import styles from './Home.module.css';
+import ScrollWebPPlayer from '@/components/ScrollWebPPlayer';
+import LoadingOverlay from '@/components/LoadingOverlay';
+import Navbar from '@/components/Navbar';
+
+const DISH_VARIANTS = [
+  {
+    id: 1,
+    name: "Salmon Avocado",
+    subtitle: "FRESH & HEALTHY",
+    description: "A delicious blend of rich salmon and creamy avocado, served with a light citrus dressing.",
+    themeColor: "#8b5e3c",
+    sequencePath: "/avocado-salmon-frame/frame_",
+    frameCount: 192
+  },
+  {
+    id: 2,
+    name: "Grilled Tuna",
+    subtitle: "LIGHT & SMOKY",
+    description: "Perfectly grilled tuna, served with fresh greens and a smoky dressing.",
+    themeColor: "#2a9d8f",
+    sequencePath: "/avocado-salmon-frame/frame_",
+    frameCount: 192
+  },
+  {
+    id: 3,
+    name: "Mediterranean Salad",
+    subtitle: "FRESH & ZESTY",
+    description: "A refreshing salad of mixed greens, tomatoes, olives, and feta cheese with a zesty vinaigrette.",
+    themeColor: "#e9c46a",
+    sequencePath: "/avocado-salmon-frame/frame_",
+    frameCount: 192
+  }
+];
 
 export default function Home() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isSwitching, setIsSwitching] = useState(false);
+
+  const currentDish = DISH_VARIANTS[currentIndex];
+
+  useEffect(() => {
+    // Apply dynamic theme color
+    document.documentElement.style.setProperty('--accent-color', currentDish.themeColor);
+  }, [currentDish]);
+
+  const handleNext = () => {
+    setIsSwitching(true);
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev + 1) % DISH_VARIANTS.length);
+      setIsSwitching(false);
+    }, 500);
+  };
+
+  const handlePrev = () => {
+    setIsSwitching(true);
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev - 1 + DISH_VARIANTS.length) % DISH_VARIANTS.length);
+      setIsSwitching(false);
+    }, 500);
+  };
+
+  const handleLoadingProgress = (progress) => {
+    setLoadingProgress(progress);
+    if (progress >= 100) {
+      setTimeout(() => setIsLoading(false), 800);
+    }
+  };
+
   return (
-    <div className={styles.home}>
-      {/* Hero Section */}
-      <section className={styles.hero}>
-        <div className={`${styles.container} container`}>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className={styles.heroContent}
-          >
-            <span className={styles.subtitle}>Welcome to Cafe Da-Vina</span>
-            <h1>Where Every Meal Feels Like Home</h1>
-            <p>
-              A lovely place for a delightful meal, serving comforting and tasty food in a cozy and inviting environment. Perfect for eggs on salmon, avocado salmon, and more.
-            </p>
-            <div className={styles.cta}>
-              <Link href="/booking" className="btn btn-primary">Make a Reservation</Link>
-              <Link href="/menu" className="btn btn-outline">Explore Menu</Link>
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className={styles.heroImage}
-          >
-            <div className={styles.imagePlaceholder}>
-              <img src="/egg-on-salmon.webp" alt="Cafe Interior" />
-            </div>
-          </motion.div>
-        </div>
-      </section>
+    <div className={styles.page}>
+      <AnimatePresence>
+        {isLoading && (
+          <LoadingOverlay progress={loadingProgress} visible={isLoading} />
+        )}
+      </AnimatePresence>
 
-      {/* Intro Section */}
-      <section className={`${styles.intro} section`}>
-        <div className="container">
-          <div className={styles.introGrid}>
-            <div className={styles.introCard}>
-              <Heart className={styles.icon} size={40} />
-              <h3>Warm Ambiance</h3>
-              <p>Experience the charm of our cozy space, designed to make you feel right at home.</p>
-            </div>
-            <div className={styles.introCard}>
-              <Utensils className={styles.icon} size={40} />
-              <h3>Fresh Food</h3>
-              <p>Delight in our carefully crafted meals made with the freshest local ingredients.</p>
-            </div>
-            <div className={styles.introCard}>
-              <ChefHat className={styles.icon} size={40} />
-              <h3>Lovely Service</h3>
-              <p>Our friendly team is here to ensure your visit is nothing short of wonderful.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Navbar />
 
-      {/* Featured Items Section */}
-      <section className={`${styles.featured} section`}>
-        <div className="container">
-          <div className={styles.sectionHeader}>
-            <span>Our Specialties</span>
-            <h2>Chef's Recommendations</h2>
-          </div>
-          <div className={styles.featuredGrid}>
-            {[
-              { name: 'Eggs on Salmon', img: '/egg-on-salmon.webp' },
-              { name: 'Avocado Salmon', img: '/avvocado-salmon.webp' },
-              { name: 'Smashed Avocado', img: '/smashed-avocado.jpg' }
-            ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -10 }}
-                className={styles.featuredItem}
-              >
-                <img src={item.img} alt={item.name} />
-                <div className={styles.itemInfo}>
-                  <h3>{item.name}</h3>
-                  <Link href="/menu" className={styles.link}>View Details</Link>
+      <main>
+        {/* Parallax Hero */}
+        <section className={styles.hero}>
+          <ScrollWebPPlayer
+            key={currentDish.sequencePath}
+            sequencePath={currentDish.sequencePath}
+            frameCount={currentDish.frameCount}
+            onProgress={handleLoadingProgress}
+          />
+
+          <div className={`container ${styles.heroGrid}`}>
+            {/* Left Content */}
+            <div className={styles.heroLeft}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentDish.id}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                  <h1 className={styles.dishName}>{currentDish.name}</h1>
+                  <span className={styles.dishSubtitle}>{currentDish.subtitle}</span>
+                  <p className={styles.dishDescription}>{currentDish.description}</p>
+
+                  <div className={styles.heroActions}>
+                    <button className="btn btn-outline">See Menu</button>
+                    <button className="btn btn-primary">Order Now</button>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Center Area (Empty for visual) */}
+            <div className={styles.heroCenter}></div>
+
+            {/* Right Navigation */}
+            <div className={styles.heroRight}>
+              <div className={styles.dishIndex}>
+                0{currentIndex + 1}
+              </div>
+
+              <div className={styles.variantNav}>
+                <button onClick={handlePrev} className={styles.navBtn}>
+                  <span className={styles.navLabel}>PREV</span>
+                  <ChevronUp size={24} />
+                </button>
+                <div className={styles.navDivider}></div>
+                <button onClick={handleNext} className={styles.navBtn}>
+                  <ChevronDown size={24} />
+                  <span className={styles.navLabel}>NEXT</span>
+                </button>
+              </div>
+
+              {isSwitching && (
+                <div className={styles.miniLoader}>
+                  <div className={styles.spinner}></div>
                 </div>
-              </motion.div>
-            ))}
+              )}
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Reservation CTA */}
-      <section className={styles.reservationCta}>
-        <div className="container">
-          <div className={styles.ctaBox}>
-            <h2>Ready to join us?</h2>
-            <p>Book your cozy table today and experience the warmth of Cafe Da-Vina.</p>
-            <Link href="/booking" className="btn btn-primary">
-              <Calendar size={20} style={{ marginRight: '10px', verticalAlign: 'middle' }} />
-              Book Now
-            </Link>
+          {/* Social Icons (Bottom Center) */}
+          <div className={styles.heroSocials}>
+            <a href="#"><Instagram size={20} /></a>
+            <a href="#"><Facebook size={20} /></a>
+            <a href="#"><Twitter size={20} /></a>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Scroll Spacer for Parallax effect */}
+        <div className={styles.scrollSpacer}></div>
+
+        {/* Menu Section */}
+        <section id="menu" className={styles.contentSection}>
+          <div className="container">
+            <div className={styles.sectionHeading}>
+              <span>Discover</span>
+              <h2>Menu / About the Dish</h2>
+            </div>
+            <div className={styles.menuGrid}>
+              <div className={styles.menuContent}>
+                <h3>Culinary Inspiration</h3>
+                <p>Our {currentDish.name} is inspired by the vibrant flavors of the Mediterranean. Every ingredient is carefully selected for its freshness and nutritional value.</p>
+                <ul className={styles.featureList}>
+                  <li><Leaf size={18} /> Freshly Sourced Ingredients</li>
+                  <li><Leaf size={18} /> Authentic Mediterranean Spices</li>
+                  <li><Leaf size={18} /> Chef-Crafted Recipes</li>
+                </ul>
+              </div>
+              <div className={styles.menuImage}>
+                <img src="/egg-on-salmon.webp" alt="Menu item" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Ingredients Section */}
+        <section id="ingredients" className={`${styles.contentSection} ${styles.altBg}`}>
+          <div className="container">
+            <div className={styles.sectionHeading}>
+              <span>Wholesome</span>
+              <h2>Ingredients & Benefits</h2>
+            </div>
+            <div className={styles.ingredientsGrid}>
+              {[
+                { name: 'Salmon', benefit: 'Rich in Omega-3 fatty acids for heart health.' },
+                { name: 'Avocado', benefit: 'Healthy fats and fiber for sustained energy.' },
+                { name: 'Citrus', benefit: 'High in Vitamin C to boost immunity.' },
+                { name: 'Herbs', benefit: 'Natural antioxidants and deep flavor.' }
+              ].map((item, i) => (
+                <div key={i} className={styles.ingredientCard}>
+                  <div className={styles.ingredientIcon}><Leaf /></div>
+                  <h4>{item.name}</h4>
+                  <p>{item.benefit}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Nutrition Section */}
+        <section id="nutrition" className={styles.contentSection}>
+          <div className="container">
+            <div className={styles.nutritionLayout}>
+              <div className={styles.nutritionLabel}>
+                <h3>Nutrition Facts</h3>
+                <div className={styles.labelDivider}></div>
+                <div className={styles.labelItem}><span>Calories</span> <span>450</span></div>
+                <div className={styles.labelItem}><span>Total Fat</span> <span>22g</span></div>
+                <div className={styles.labelItem}><span>Protein</span> <span>35g</span></div>
+                <div className={styles.labelItem}><span>Carbs</span> <span>12g</span></div>
+                <div className={styles.labelItem}><span>Fiber</span> <span>8g</span></div>
+              </div>
+              <div className={styles.nutritionIntro}>
+                <h2>Healthy & Balanced</h2>
+                <p>We believe that food should not only taste good but also feel good. Each serving is designed to provide a balanced macro-nutrient profile.</p>
+                <button className="btn btn-primary">Download Guide</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Reviews Section */}
+        <section id="reviews" className={`${styles.contentSection} ${styles.altBg}`}>
+          <div className="container">
+            <div className={styles.sectionHeading}>
+              <span>Voices</span>
+              <h2>Wall of Love</h2>
+            </div>
+            <div className={styles.reviewsGrid}>
+              {[1, 2, 3].map(i => (
+                <div key={i} className={styles.reviewCard}>
+                  <MessageSquare className={styles.reviewIcon} />
+                  <p>"Absolutely stunning experience! The parallax effects are cool, but the food is even better. The {currentDish.name} is a must-try."</p>
+                  <div className={styles.reviewer}>
+                    <strong>John Doe</strong>
+                    <span>Food Critic</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section id="faq" className={styles.contentSection}>
+          <div className="container">
+            <div className={styles.sectionHeading}>
+              <span>Questions</span>
+              <h2>Common Inquiries</h2>
+            </div>
+            <div className={styles.faqList}>
+              {[
+                { q: "Is the salmon wild-caught?", a: "Yes, we source all our salmon sustainably from local fisheries." },
+                { q: "Do you have gluten-free options?", a: "Most of our dishes can be prepared gluten-free upon request." },
+                { q: "Can I book a private event?", a: "Absolutely! Please contact us via phone or email for inquiries." }
+              ].map((item, i) => (
+                <div key={i} className={styles.faqItem}>
+                  <div className={styles.faqHeader}>
+                    <h4>{item.q}</h4>
+                    <HelpCircle size={20} />
+                  </div>
+                  <p className={styles.faqAnswer}>{item.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section id="contact" className={styles.ctaSection}>
+          <div className="container text-center">
+            <h2>Ready for an unforgettable meal?</h2>
+            <p>Join us at Cafe Da Vina for a modern fusion experience.</p>
+            <div className={styles.ctaButtons}>
+              <button className="btn btn-primary">Book a Table Now</button>
+              <button className="btn btn-outline">Call Us</button>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className={styles.footer}>
+          <div className="container">
+            <div className={styles.footerGrid}>
+              <div className={styles.footerBrand}>
+                <h3>Cafe Da Vina</h3>
+                <p>Modern Fusion Café</p>
+                <div className={styles.footerSocials}>
+                  <a href="#"><Instagram /></a>
+                  <a href="#"><Facebook /></a>
+                  <a href="#"><Twitter /></a>
+                </div>
+              </div>
+              <div className={styles.footerLinks}>
+                <h4>Quick Links</h4>
+                <a href="#menu">Menu</a>
+                <a href="#ingredients">Ingredients</a>
+                <a href="#reviews">Reviews</a>
+              </div>
+              <div className={styles.footerContact}>
+                <h4>Contact</h4>
+                <p><MapPin size={16} /> 123 Gourmet St, Food City</p>
+                <p><Phone size={16} /> +1 234 567 890</p>
+                <p><Mail size={16} /> hello@cafedavina.com</p>
+              </div>
+            </div>
+            <div className={styles.footerBottom}>
+              <p>&copy; 2026 Cafe Da Vina. All rights reserved.</p>
+              <div className={styles.footerLegal}>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </main>
     </div>
   );
 }
