@@ -7,6 +7,7 @@ import { db } from '@/lib/firebase';
 import { collection, addDoc, query, where, getDocs, Timestamp } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar as CalendarIcon, Clock, Users, Mail, CheckCircle, AlertCircle } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import styles from './Booking.module.css';
 
 const timeSlots = [
@@ -58,21 +59,30 @@ export default function BookingPage() {
                 createdAt: Timestamp.now()
             });
 
-            // Also add to a separate 'mail' collection for trigger email extension
-            await addDoc(collection(db, 'mail'), {
-                to: [email, 'owner@cafedavina.com'],
-                message: {
-                    subject: 'Reservation Confirmed - Cafe Da-Vina',
-                    html: `<h3>Your reservation is confirmed!</h3>
-                 <p>Details:</p>
-                 <ul>
-                   <li>Date: ${format(selectedDate, 'PPP')}</li>
-                   <li>Time: ${selectedTime}</li>
-                   <li>Guests: ${numPeople}</li>
-                 </ul>
-                 <p>We look forward to seeing you!</p>`
-                }
-            });
+            // Send confirmation email using EmailJS (FREE - 200 emails/month)
+            // Set up your EmailJS account at https://www.emailjs.com/
+            // Then add these to your .env.local:
+            // NEXT_PUBLIC_EMAILJS_SERVICE_ID, NEXT_PUBLIC_EMAILJS_TEMPLATE_ID, NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+            try {
+                await emailjs.send(
+                    process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID',
+                    process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID',
+                    {
+                        to_email: email,
+                        to_name: 'Valued Guest',
+                        booking_date: format(selectedDate, 'PPP'),
+                        booking_time: selectedTime,
+                        guest_count: numPeople,
+                        cafe_name: 'Cafe Da-Vina',
+                        cafe_address: '107 Astor Terrace, Spring Hill QLD 4000'
+                    },
+                    process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY'
+                );
+                console.log('Confirmation email sent!');
+            } catch (emailError) {
+                console.warn('Email sending failed (EmailJS not configured):', emailError);
+                // Don't block the booking if email fails
+            }
 
             setIsBooked(true);
         } catch (err) {
