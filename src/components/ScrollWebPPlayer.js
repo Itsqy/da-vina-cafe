@@ -4,14 +4,18 @@ import { useScroll, useSpring, useMotionValueEvent, useTransform } from 'framer-
 
 export default function ScrollWebPPlayer({
     sequencePath = '/avocado-salmon-frame/frame_',
-    frameCount = 192,
-    onProgress
+    frameCount = 147,
+    onProgress,
+    containerRef // Add this prop
 }) {
     const canvasRef = useRef(null);
     const imagesRef = useRef(new Array(frameCount).fill(null));
     const [isLoaded, setIsLoaded] = useState(false);
 
-    const { scrollYProgress } = useScroll();
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
     const smoothScroll = useSpring(scrollYProgress, { stiffness: 100, damping: 20, restDelta: 0.001 });
     const frameIndex = useTransform(smoothScroll, [0, 1], [0, frameCount - 1]);
 
@@ -78,31 +82,34 @@ export default function ScrollWebPPlayer({
 
     useEffect(() => {
         let isMounted = true;
+        let loadedCount = 0;
+        let failedCount = 0;
+
+        const updateProgress = () => {
+            if (onProgress) {
+                const totalProcessed = loadedCount + failedCount;
+                onProgress(Math.floor((totalProcessed / frameCount) * 100));
+            }
+        };
 
         const loadImages = async () => {
-            // Optimized Priority Strategy:
-            // 1. First 5 frames (immediate start)
-            // 2. Every 4th frame (coverage)
-            // 3. Every 2nd frame (detail)
-            // 4. All remaining frames
-
-            const p1 = [];
+            // Priority Strategy:
+            const p1 = []; // Start
             for (let i = 0; i < Math.min(10, frameCount); i++) p1.push(i);
 
-            const p2 = [];
-            for (let i = 0; i < frameCount; i += 4) if (!p1.includes(i)) p2.push(i);
+            const p2 = []; // Intermediate coverage
+            for (let i = 0; i < frameCount; i += 8) if (!p1.includes(i)) p2.push(i);
 
-            const p3 = [];
+            const p3 = []; // Finer coverage
             for (let i = 0; i < frameCount; i += 2) if (!p1.includes(i) && !p2.includes(i)) p3.push(i);
 
-            const p4 = [];
+            const p4 = []; // All others
             for (let i = 0; i < frameCount; i++) if (!p1.includes(i) && !p2.includes(i) && !p3.includes(i)) p4.push(i);
 
             const allIndices = [...p1, ...p2, ...p3, ...p4];
-            let loadedCount = 0;
 
             const loadBatch = async (indices) => {
-                const batchSize = 8; // Smaller concurrent requests to prevent choking
+                const batchSize = 6; // Balance between speed and browser stress
                 for (let i = 0; i < indices.length; i += batchSize) {
                     if (!isMounted) return;
                     const batch = indices.slice(i, i + batchSize);
@@ -111,26 +118,28 @@ export default function ScrollWebPPlayer({
                         if (imagesRef.current[idx]) { resolve(); return; }
 
                         const img = new Image();
-                        img.src = `${sequencePath}${String(idx).padStart(3, '0')}.webp`;
                         img.onload = () => {
                             if (!isMounted) return;
                             imagesRef.current[idx] = img;
                             loadedCount++;
+                            updateProgress();
 
-                            // Report progress
-                            if (onProgress) {
-                                onProgress(Math.floor((loadedCount / frameCount) * 100));
-                            }
-
-                            // Redraw if this frame is near current scroll position? 
-                            // Simplified: Just draw current targeted frame
-                            if (isMounted) drawImage(Math.floor(frameIndex.get()));
+                            // Draw if near current scroll
+                            const currentTarget = Math.floor(frameIndex.get());
+                            if (Math.abs(currentTarget - idx) < 5) drawImage(currentTarget);
                             resolve();
                         };
-                        img.onerror = resolve;
+                        img.onerror = () => {
+                            if (!isMounted) return;
+                            failedCount++;
+                            updateProgress();
+                            resolve();
+                        };
+                        img.src = `${sequencePath}${String(idx).padStart(3, '0')}.webp`;
                     })));
 
-                    await new Promise(r => setTimeout(r, 5)); // Minimal yield
+                    // Small yield for main thread
+                    if (i % (batchSize * 2) === 0) await new Promise(r => setTimeout(r, 0));
                 }
             };
 
@@ -175,14 +184,15 @@ export default function ScrollWebPPlayer({
         <canvas
             ref={canvasRef}
             style={{
-                position: 'fixed',
+                position: 'absolute',
                 top: 0,
                 left: 0,
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
                 pointerEvents: 'none',
-                zIndex: 0
+                zIndex: 0,
+                transform: 'scale(1.15)'
             }}
         />
     );

@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import {
   Instagram, Facebook, Twitter, ChevronUp, ChevronDown,
   Leaf, Info, MessageSquare, HelpCircle, Mail, MapPin, Phone
@@ -18,7 +19,7 @@ const DISH_VARIANTS = [
     description: "A delicious blend of rich salmon and creamy avocado, served with a light citrus dressing.",
     themeColor: "#8b5e3c",
     sequencePath: "/avocado-salmon-frame/frame_",
-    frameCount: 192
+    frameCount: 147
   },
   {
     id: 2,
@@ -27,7 +28,7 @@ const DISH_VARIANTS = [
     description: "Perfectly grilled tuna, served with fresh greens and a smoky dressing.",
     themeColor: "#2a9d8f",
     sequencePath: "/avocado-salmon-frame/frame_",
-    frameCount: 192
+    frameCount: 147
   },
   {
     id: 3,
@@ -36,7 +37,7 @@ const DISH_VARIANTS = [
     description: "A refreshing salad of mixed greens, tomatoes, olives, and feta cheese with a zesty vinaigrette.",
     themeColor: "#e9c46a",
     sequencePath: "/avocado-salmon-frame/frame_",
-    frameCount: 192
+    frameCount: 147
   }
 ];
 
@@ -46,10 +47,19 @@ export default function Home() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isSwitching, setIsSwitching] = useState(false);
 
+  const heroContainerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroContainerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Fade out hero content near the end of the scroll container
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+
   const currentDish = DISH_VARIANTS[currentIndex];
 
   useEffect(() => {
-    // Apply dynamic theme color
     document.documentElement.style.setProperty('--accent-color', currentDish.themeColor);
   }, [currentDish]);
 
@@ -87,77 +97,83 @@ export default function Home() {
       <Navbar />
 
       <main>
-        {/* Parallax Hero */}
-        <section className={styles.hero}>
-          <ScrollWebPPlayer
-            key={currentDish.sequencePath}
-            sequencePath={currentDish.sequencePath}
-            frameCount={currentDish.frameCount}
-            onProgress={handleLoadingProgress}
-          />
+        {/* Parallax Hero Wrapper - This handles the scroll duration for frames */}
+        <div ref={heroContainerRef} className={styles.heroScrollWrapper}>
+          <section className={styles.hero}>
+            <ScrollWebPPlayer
+              key={currentDish.sequencePath}
+              sequencePath={currentDish.sequencePath}
+              frameCount={currentDish.frameCount}
+              onProgress={handleLoadingProgress}
+              containerRef={heroContainerRef}
+            />
 
-          <div className={`container ${styles.heroGrid}`}>
-            {/* Left Content */}
-            <div className={styles.heroLeft}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentDish.id}
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                >
-                  <h1 className={styles.dishName}>{currentDish.name}</h1>
-                  <span className={styles.dishSubtitle}>{currentDish.subtitle}</span>
-                  <p className={styles.dishDescription}>{currentDish.description}</p>
+            <motion.div
+              style={{ opacity: heroOpacity, scale: heroScale }}
+              className={`container ${styles.heroGrid}`}
+            >
+              {/* Left Content */}
+              <div className={styles.heroLeft}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentDish.id}
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -50 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                  >
+                    <h1 className={styles.dishName}>{currentDish.name}</h1>
+                    <span className={styles.dishSubtitle}>{currentDish.subtitle}</span>
+                    <p className={styles.dishDescription}>{currentDish.description}</p>
 
-                  <div className={styles.heroActions}>
-                    <button className="btn btn-outline">See Menu</button>
-                    <button className="btn btn-primary">Order Now</button>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Center Area (Empty for visual) */}
-            <div className={styles.heroCenter}></div>
-
-            {/* Right Navigation */}
-            <div className={styles.heroRight}>
-              <div className={styles.dishIndex}>
-                0{currentIndex + 1}
+                    <div className={styles.heroActions}>
+                      <Link href="#menu" className="btn btn-outline">See Menu</Link>
+                      <Link href="/booking" className="btn btn-primary">Order Now</Link>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
-              <div className={styles.variantNav}>
-                <button onClick={handlePrev} className={styles.navBtn}>
-                  <span className={styles.navLabel}>PREV</span>
-                  <ChevronUp size={24} />
-                </button>
-                <div className={styles.navDivider}></div>
-                <button onClick={handleNext} className={styles.navBtn}>
-                  <ChevronDown size={24} />
-                  <span className={styles.navLabel}>NEXT</span>
-                </button>
-              </div>
+              {/* Center Area (Empty for visual) */}
+              <div className={styles.heroCenter}></div>
 
-              {isSwitching && (
-                <div className={styles.miniLoader}>
-                  <div className={styles.spinner}></div>
+              {/* Right Navigation */}
+              <div className={styles.heroRight}>
+                <div className={styles.dishIndex}>
+                  0{currentIndex + 1}
                 </div>
-              )}
-            </div>
-          </div>
 
-          {/* Social Icons (Bottom Center) */}
-          <div className={styles.heroSocials}>
-            <a href="#"><Instagram size={20} /></a>
-            <a href="#"><Facebook size={20} /></a>
-            <a href="#"><Twitter size={20} /></a>
-          </div>
-        </section>
+                <div className={styles.variantNav}>
+                  <button onClick={handlePrev} className={styles.navBtn}>
+                    <span className={styles.navLabel}>PREV</span>
+                    <ChevronUp size={24} />
+                  </button>
+                  <div className={styles.navDivider}></div>
+                  <button onClick={handleNext} className={styles.navBtn}>
+                    <ChevronDown size={24} />
+                    <span className={styles.navLabel}>NEXT</span>
+                  </button>
+                </div>
 
-        {/* Scroll Spacer for Parallax effect */}
-        <div className={styles.scrollSpacer}></div>
+                {isSwitching && (
+                  <div className={styles.miniLoader}>
+                    <div className={styles.spinner}></div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Social Icons (Bottom Center) */}
+            <motion.div
+              style={{ opacity: heroOpacity }}
+              className={styles.heroSocials}
+            >
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><Twitter size={20} /></a>
+            </motion.div>
+          </section>
+        </div>
 
         {/* Menu Section */}
         <section id="menu" className={styles.contentSection}>
@@ -223,7 +239,7 @@ export default function Home() {
               <div className={styles.nutritionIntro}>
                 <h2>Healthy & Balanced</h2>
                 <p>We believe that food should not only taste good but also feel good. Each serving is designed to provide a balanced macro-nutrient profile.</p>
-                <button className="btn btn-primary">Download Guide</button>
+                <Link href="/booking" className="btn btn-primary">Book Now</Link>
               </div>
             </div>
           </div>
@@ -280,10 +296,10 @@ export default function Home() {
         <section id="contact" className={styles.ctaSection}>
           <div className="container text-center">
             <h2>Ready for an unforgettable meal?</h2>
-            <p>Join us at Cafe Da Vina for a modern fusion experience.</p>
+            <p>Join us at Cafe Da Vina for a modern fusion expereince.</p>
             <div className={styles.ctaButtons}>
-              <button className="btn btn-primary">Book a Table Now</button>
-              <button className="btn btn-outline">Call Us</button>
+              <Link href="/booking" className="btn btn-primary">Book a Table Now</Link>
+              <a href="tel:+1234567890" className="btn btn-outline">Call Us</a>
             </div>
           </div>
         </section>
@@ -296,16 +312,16 @@ export default function Home() {
                 <h3>Cafe Da Vina</h3>
                 <p>Modern Fusion Café</p>
                 <div className={styles.footerSocials}>
-                  <a href="#"><Instagram /></a>
-                  <a href="#"><Facebook /></a>
-                  <a href="#"><Twitter /></a>
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><Twitter size={20} /></a>
                 </div>
               </div>
               <div className={styles.footerLinks}>
                 <h4>Quick Links</h4>
-                <a href="#menu">Menu</a>
-                <a href="#ingredients">Ingredients</a>
-                <a href="#reviews">Reviews</a>
+                <Link href="#menu">Menu</Link>
+                <Link href="#ingredients">Ingredients</Link>
+                <Link href="#reviews">Reviews</Link>
               </div>
               <div className={styles.footerContact}>
                 <h4>Contact</h4>
@@ -317,8 +333,8 @@ export default function Home() {
             <div className={styles.footerBottom}>
               <p>&copy; 2026 Cafe Da Vina. All rights reserved.</p>
               <div className={styles.footerLegal}>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
+                <Link href="/privacy">Privacy Policy</Link>
+                <Link href="/terms">Terms of Service</Link>
               </div>
             </div>
           </div>
