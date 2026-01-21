@@ -1,8 +1,0 @@
-{
-  "name": "Cafe Da Vina - Gourmet Experience",
-  "description": "A premium parallax food brand website featuring interactive dish variants, smooth scroll-triggered animations, and a cinematic gourmet aesthetic.",
-  "requestFramePermissions": [
-    "camera",
-    "geolocation"
-  ]
-}
