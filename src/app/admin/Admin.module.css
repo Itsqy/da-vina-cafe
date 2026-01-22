@@ -5,6 +5,76 @@
     align-items: center;
     justify-content: center;
     background: var(--bg-primary);
+    padding: 1rem;
+}
+
+.loginCard {
+    background: var(--bg-secondary);
+    padding: 3rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+
+.loginCard h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.loginCard p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.loginForm {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.inputGroup label {
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.inputGroup input {
+    background: var(--bg-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    width: 100%;
+    outline: none;
+    transition: var(--transition);
+}
+
+.inputGroup input:focus {
+    border-color: var(--accent-color);
+}
+
+.errorMsg {
+    color: #ff4d4d;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.loading {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-primary);
+    font-size: 1.5rem;
 }
 
 .adminPage {
@@ -17,10 +87,38 @@
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 4rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 1rem;
+    padding-bottom: 2rem;
+}
+
+.tabs {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.tabs button {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.tabs button:hover {
+    border-color: var(--accent-color);
+    color: #fff;
+}
+
+.tabs button.activeTab {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #fff;
 }
 
 .content {
@@ -64,4 +162,152 @@
     height: 50px;
     padding: 0;
     cursor: pointer;
+    flex: 0 0 50px;
+}
+
+.inputRow {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.inputRow input {
+    flex: 1;
+}
+
+.imagePreview {
+    margin-bottom: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Booking List Styles */
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.filterBar {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filterBar button {
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.filterBar button.activeFilter {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background: rgba(var(--accent-color), 0.1);
+}
+
+.dateFilter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-secondary);
+    padding-right: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dateFilter button {
+    border: none;
+}
+
+.dateFilter input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    padding: 0;
+}
+
+.bookingTable {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.tableHead {
+    display: grid;
+    grid-template-columns: 120px 2fr 1.5fr 100px 100px;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tableRow {
+    display: grid;
+    grid-template-columns: 120px 2fr 1.5fr 100px 100px;
+    padding: 1.5rem 2rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.3s ease;
+}
+
+.tableRow:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.refId {
+    font-family: monospace;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.guestInfo,
+.dateTime {
+    display: flex;
+    flex-direction: column;
+}
+
+.guestInfo strong,
+.dateTime strong {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.guestInfo span,
+.dateTime span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.statusBadgeConfirmed {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.emptyMsg {
+    text-align: center;
+    padding: 4rem;
+    color: var(--text-muted);
+    font-style: italic;
 }

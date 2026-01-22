@@ -2,8 +2,30 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+    // Site configuration and menu should be public-readable, admin-writeable
+    match /dishes/{dish} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /menu_items/{item} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /configs/{config} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Bookings: Public can create, Admin can read/update all
+    match /bookings/{booking} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // Email Triggers: Public can create, Admin can read/move
+    match /mail/{email} {
+      allow create: if true;
+      allow read, write: if request.auth != null;
     }
   }
 }

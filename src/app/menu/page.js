@@ -1,8 +1,11 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { db } from '@/lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 import styles from './Menu.module.css';
 
-const menuItems = [
+const DEFAULT_MENU = [
     {
         id: 1,
         name: 'Eggs on Salmon',
@@ -18,26 +21,26 @@ const menuItems = [
         price: '$21.00',
         image: '/avvocado-salmon.webp',
         category: 'Lunch'
-    },
-    {
-        id: 3,
-        name: 'Ham and Toast',
-        description: 'Thick slices of honey-glazed ham served with artisan sourdough toast and homemade jam.',
-        price: '$15.50',
-        image: '/toast-and-ham.webp',
-        category: 'Breakfast'
-    },
-    {
-        id: 4,
-        name: 'Smashed Avocado',
-        description: 'Our signature smashed avocado on sourdough, topped with feta, radish, and a hint of chili.',
-        price: '$16.50',
-        image: '/smashed-avocado.jpg',
-        category: 'Breakfast'
     }
 ];
 
 export default function MenuPage() {
+    const [menuItems, setMenuItems] = useState(DEFAULT_MENU);
+
+    useEffect(() => {
+        const fetchMenu = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "menu_items"));
+                if (!querySnapshot.empty) {
+                    setMenuItems(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                }
+            } catch (err) {
+                console.error("Error fetching menu:", err);
+            }
+        };
+        fetchMenu();
+    }, []);
+
     return (
         <div className={styles.menuPage}>
             <section className={styles.headerSection}>
@@ -83,3 +86,4 @@ export default function MenuPage() {
         </div>
     );
 }
+

@@ -4,16 +4,18 @@ import Link from 'next/link';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import {
   Instagram, Facebook, Twitter, ChevronUp, ChevronDown,
-  Leaf, Info, MessageSquare, HelpCircle, Mail, MapPin, Phone
+  Leaf, Info, MessageSquare, HelpCircle, Mail, MapPin, Phone, Clock
 } from 'lucide-react';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import styles from './Home.module.css';
 import ScrollWebPPlayer from '@/components/ScrollWebPPlayer';
 import LoadingOverlay from '@/components/LoadingOverlay';
 import Navbar from '@/components/Navbar';
 
-const DISH_VARIANTS = [
+const DEFAULT_DISHES = [
   {
-    id: 1,
+    id: 'salmon-avocado',
     name: "Salmon Avocado",
     subtitle: "FRESH & HEALTHY",
     description: "A delicious blend of rich salmon and creamy avocado, served with a light citrus dressing.",
@@ -22,7 +24,7 @@ const DISH_VARIANTS = [
     frameCount: 147
   },
   {
-    id: 2,
+    id: 'grilled-tuna',
     name: "Grilled Tuna",
     subtitle: "LIGHT & SMOKY",
     description: "Perfectly grilled tuna, served with fresh greens and a smoky dressing.",
@@ -31,7 +33,7 @@ const DISH_VARIANTS = [
     frameCount: 147
   },
   {
-    id: 3,
+    id: 'mediterranean-salad',
     name: "Mediterranean Salad",
     subtitle: "FRESH & ZESTY",
     description: "A refreshing salad of mixed greens, tomatoes, olives, and feta cheese with a zesty vinaigrette.",
@@ -41,11 +43,60 @@ const DISH_VARIANTS = [
   }
 ];
 
+const DEFAULT_MENU = [
+  {
+    id: 'item-1',
+    name: 'Eggs on Salmon',
+    description: 'Freshly poached eggs served on premium smoked salmon and toasted sourdough bread.',
+    price: '$18.50',
+    image: '/egg-on-salmon.webp',
+    category: 'Breakfast'
+  },
+  {
+    id: 'item-2',
+    name: 'Avocado Salmon',
+    description: 'Grilled salmon fillet accompanied by creamy avocado slices and a light citrus salad.',
+    price: '$21.00',
+    image: '/avvocado-salmon.webp',
+    category: 'Lunch'
+  },
+  {
+    id: 'item-3',
+    name: 'Ham and Toast',
+    description: 'Thick slices of honey-glazed ham served with artisan sourdough toast and homemade jam.',
+    price: '$15.50',
+    image: '/toast-and-ham.webp',
+    category: 'Breakfast'
+  },
+  {
+    id: 'item-4',
+    name: 'Smashed Avocado',
+    description: 'Our signature smashed avocado on sourdough, topped with feta, radish, and a hint of chili.',
+    price: '$16.50',
+    image: '/smashed-avocado.jpg',
+    category: 'Breakfast'
+  }
+];
+
+const DEFAULT_CONFIG = {
+  heroTitle: "Ready for an unforgettable meal?",
+  heroDescription: "Join us at Cafe Da Vina for a modern fusion experience.",
+  address: "123 Gourmet St, Food City",
+  phone: "+1 234 567 890",
+  email: "hello@cafedavina.com",
+  isOpen: true
+};
+
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isSwitching, setIsSwitching] = useState(false);
+
+  // Firestore Data
+  const [dishes, setDishes] = useState(DEFAULT_DISHES);
+  const [menuItems, setMenuItems] = useState(DEFAULT_MENU);
+  const [siteConfig, setSiteConfig] = useState(DEFAULT_CONFIG);
 
   const heroContainerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -53,20 +104,46 @@ export default function Home() {
     offset: ["start start", "end end"]
   });
 
-  // Fade out hero content near the end of the scroll container
   const heroOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
-  const currentDish = DISH_VARIANTS[currentIndex];
+  const currentDish = dishes[currentIndex] || DEFAULT_DISHES[0];
 
   useEffect(() => {
-    document.documentElement.style.setProperty('--accent-color', currentDish.themeColor);
+    const fetchData = async () => {
+      try {
+        // Fetch Dishes
+        const dishesSnap = await getDocs(collection(db, "dishes"));
+        if (!dishesSnap.empty) {
+          setDishes(dishesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        }
+
+        // Fetch Menu Items
+        const menuSnap = await getDocs(collection(db, "menu_items"));
+        setMenuItems(menuSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+        // Fetch Site Config
+        const configSnap = await getDoc(doc(db, "configs", "site"));
+        if (configSnap.exists()) {
+          setSiteConfig(configSnap.data());
+        }
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (currentDish) {
+      document.documentElement.style.setProperty('--accent-color', currentDish.themeColor);
+    }
   }, [currentDish]);
 
   const handleNext = () => {
     setIsSwitching(true);
     setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % DISH_VARIANTS.length);
+      setCurrentIndex((prev) => (prev + 1) % dishes.length);
       setIsSwitching(false);
     }, 500);
   };
@@ -74,7 +151,7 @@ export default function Home() {
   const handlePrev = () => {
     setIsSwitching(true);
     setTimeout(() => {
-      setCurrentIndex((prev) => (prev - 1 + DISH_VARIANTS.length) % DISH_VARIANTS.length);
+      setCurrentIndex((prev) => (prev - 1 + dishes.length) % dishes.length);
       setIsSwitching(false);
     }, 500);
   };
@@ -97,13 +174,12 @@ export default function Home() {
       <Navbar />
 
       <main>
-        {/* Parallax Hero Wrapper - This handles the scroll duration for frames */}
         <div ref={heroContainerRef} className={styles.heroScrollWrapper}>
           <section className={styles.hero}>
             <ScrollWebPPlayer
-              key={currentDish.sequencePath}
-              sequencePath={currentDish.sequencePath}
-              frameCount={currentDish.frameCount}
+              key={currentDish?.sequencePath || 'fallback'}
+              sequencePath={currentDish?.sequencePath || DEFAULT_DISHES[0].sequencePath}
+              frameCount={currentDish?.frameCount || DEFAULT_DISHES[0].frameCount}
               onProgress={handleLoadingProgress}
               containerRef={heroContainerRef}
             />
@@ -112,19 +188,18 @@ export default function Home() {
               style={{ opacity: heroOpacity, scale: heroScale }}
               className={`container ${styles.heroGrid}`}
             >
-              {/* Left Content */}
               <div className={styles.heroLeft}>
                 <AnimatePresence mode="wait">
                   <motion.div
-                    key={currentDish.id}
+                    key={currentDish?.id || 'empty'}
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                   >
-                    <h1 className={styles.dishName}>{currentDish.name}</h1>
-                    <span className={styles.dishSubtitle}>{currentDish.subtitle}</span>
-                    <p className={styles.dishDescription}>{currentDish.description}</p>
+                    <h1 className={styles.dishName}>{currentDish?.name}</h1>
+                    <span className={styles.dishSubtitle}>{currentDish?.subtitle}</span>
+                    <p className={styles.dishDescription}>{currentDish?.description}</p>
 
                     <div className={styles.heroActions}>
                       <Link href="#menu" className="btn btn-outline">See Menu</Link>
@@ -134,10 +209,8 @@ export default function Home() {
                 </AnimatePresence>
               </div>
 
-              {/* Center Area (Empty for visual) */}
               <div className={styles.heroCenter}></div>
 
-              {/* Right Navigation */}
               <div className={styles.heroRight}>
                 <div className={styles.dishIndex}>
                   0{currentIndex + 1}
@@ -163,7 +236,6 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Social Icons (Bottom Center) */}
             <motion.div
               style={{ opacity: heroOpacity }}
               className={styles.heroSocials}
@@ -175,26 +247,36 @@ export default function Home() {
           </section>
         </div>
 
-        {/* Menu Section */}
+        {/* Featured Menu Cards Section */}
         <section id="menu" className={styles.contentSection}>
           <div className="container">
             <div className={styles.sectionHeading}>
               <span>Discover</span>
-              <h2>Menu / About the Dish</h2>
+              <h2>Our Signature Selection</h2>
             </div>
-            <div className={styles.menuGrid}>
-              <div className={styles.menuContent}>
-                <h3>Culinary Inspiration</h3>
-                <p>Our {currentDish.name} is inspired by the vibrant flavors of the Mediterranean. Every ingredient is carefully selected for its freshness and nutritional value.</p>
-                <ul className={styles.featureList}>
-                  <li><Leaf size={18} /> Freshly Sourced Ingredients</li>
-                  <li><Leaf size={18} /> Authentic Mediterranean Spices</li>
-                  <li><Leaf size={18} /> Chef-Crafted Recipes</li>
-                </ul>
-              </div>
-              <div className={styles.menuImage}>
-                <img src="/egg-on-salmon.webp" alt="Menu item" />
-              </div>
+            <div className={styles.featuredMenuGrid}>
+              {menuItems.slice(0, 4).map((item, idx) => (
+                <motion.div
+                  key={item.id}
+                  className={styles.menuFeatureCard}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                >
+                  <div className={styles.menuFeatureImage}>
+                    <img src={item.image} alt={item.name} />
+                  </div>
+                  <div className={styles.menuFeatureContent}>
+                    <h3>{item.name}</h3>
+                    <p>{item.description}</p>
+                    <span className={styles.menuFeaturePrice}>{item.price}</span>
+                  </div>
+                </motion.div>
+              ))}
+              {menuItems.length === 0 && (
+                <p style={{ textAlign: 'center', gridColumn: '1/-1', opacity: 0.5 }}>No menu items configured yet.</p>
+              )}
             </div>
           </div>
         </section>
@@ -256,10 +338,10 @@ export default function Home() {
               {[1, 2, 3].map(i => (
                 <div key={i} className={styles.reviewCard}>
                   <MessageSquare className={styles.reviewIcon} />
-                  <p>"Absolutely stunning experience! The parallax effects are cool, but the food is even better. The {currentDish.name} is a must-try."</p>
+                  <p>"Absolutely stunning experience! The parallax effects are cool, but the food is even better."</p>
                   <div className={styles.reviewer}>
-                    <strong>John Doe</strong>
-                    <span>Food Critic</span>
+                    <strong>Satisfied Guest</strong>
+                    <span>Food Lover</span>
                   </div>
                 </div>
               ))}
@@ -295,11 +377,15 @@ export default function Home() {
         {/* Final CTA */}
         <section id="contact" className={styles.ctaSection}>
           <div className="container text-center">
-            <h2>Ready for an unforgettable meal?</h2>
-            <p>Join us at Cafe Da Vina for a modern fusion expereince.</p>
+            <h2>{siteConfig.heroTitle}</h2>
+            <p>{siteConfig.heroDescription}</p>
             <div className={styles.ctaButtons}>
               <Link href="/booking" className="btn btn-primary">Book a Table Now</Link>
-              <a href="tel:+1234567890" className="btn btn-outline">Call Us</a>
+              <a href={`tel:${siteConfig.phone}`} className="btn btn-outline">Call Us</a>
+            </div>
+            <div className={`${styles.storeStatus} ${siteConfig.isOpen ? styles.open : styles.closed}`}>
+              <Clock size={20} />
+              <span>We are currently {siteConfig.isOpen ? 'OPEN' : 'CLOSED'}</span>
             </div>
           </div>
         </section>
@@ -325,9 +411,13 @@ export default function Home() {
               </div>
               <div className={styles.footerContact}>
                 <h4>Contact</h4>
-                <p><MapPin size={16} /> 123 Gourmet St, Food City</p>
-                <p><Phone size={16} /> +1 234 567 890</p>
-                <p><Mail size={16} /> hello@cafedavina.com</p>
+                <p><MapPin size={16} /> {siteConfig.address}</p>
+                <p><Phone size={16} /> {siteConfig.phone}</p>
+                <p><Mail size={16} /> {siteConfig.email}</p>
+                <div className={styles.statusBadge}>
+                  <span className={siteConfig.isOpen ? styles.dotOpen : styles.dotClosed}></span>
+                  {siteConfig.isOpen ? 'Open Now' : 'Closed'}
+                </div>
               </div>
             </div>
             <div className={styles.footerBottom}>
@@ -343,3 +433,4 @@ export default function Home() {
     </div>
   );
 }
+
