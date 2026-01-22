@@ -628,31 +628,156 @@
 }
 
 @media (max-width: 991px) {
+    .contentSection {
+        padding: 5rem 0;
+        /* Reduced from 8-10rem for mobile */
+    }
+
+    .hero {
+        align-items: flex-end;
+        /* Align grid to bottom */
+    }
+
+    /* Add a subtle dark gradient at the bottom for readability on mobile */
+    .hero::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        /* Slightly smaller gradient */
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%);
+        z-index: 15;
+        pointer-events: none;
+    }
+
     .heroGrid {
-        grid-template-columns: 1fr;
-        height: auto;
-        padding-top: 1512px;
-        /* arbitrary */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        /* Push content to bottom */
+        padding: 0 1.25rem 8vh;
+        /* Leave room for social icons and lower text */
+        text-align: left;
+        /* Alignment left looks more premium on mobile than center */
     }
 
     .heroLeft {
         padding-right: 0;
-        text-align: center;
+        margin-bottom: 0;
+        order: 2;
+        width: 100%;
+        z-index: 20;
+    }
+
+    .dishName {
+        font-size: 2.5rem;
+        /* More refined size */
+        margin-bottom: 0.2rem;
+        line-height: 1;
+    }
+
+    .dishSubtitle {
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        margin-bottom: 0.75rem;
+    }
+
+    .dishDescription {
+        font-size: 0.85rem;
+        line-height: 1.6;
+        max-width: 100%;
+        margin-bottom: 1.5rem;
+        opacity: 0.8;
     }
 
     .heroActions {
-        justify-content: center;
+        justify-content: flex-start;
+        gap: 0.75rem;
+    }
+
+    .heroActions .btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.75rem;
+        flex: 1;
+        /* Equal width buttons on mobile */
+        max-width: 160px;
+        border-radius: 12px;
     }
 
     .heroRight {
         position: absolute;
-        top: 100px;
-        right: 2rem;
+        top: 10vh;
+        right: 1.25rem;
         height: auto;
+        align-items: flex-end;
+        z-index: 30;
     }
 
     .dishIndex {
-        font-size: 5rem;
+        font-size: 2.5rem;
+        /* Much smaller, subtle */
+        margin-bottom: 0.5rem;
+        opacity: 0.4;
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 500;
+    }
+
+    .variantNav {
+        padding: 0;
+        gap: 1rem;
+    }
+
+    .navBtn {
+        padding: 0.5rem;
+        width: 44px;
+        /* More compact */
+        height: 44px;
+        display: flex;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        /* Darker background for contrast */
+        backdrop-filter: blur(10px);
+    }
+
+    .navBtn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .navLabel {
+        display: none;
+        /* Hide 'PREV/NEXT' labels to save space */
+    }
+
+    .navDivider {
+        display: none;
+        /* Hide divider */
+    }
+
+    .heroSocials {
+        bottom: 20px;
+        left: 1.25rem;
+        transform: none;
+        gap: 1.25rem;
+        justify-content: flex-start;
+        width: auto;
+    }
+
+    .heroSocials svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Other Sections on Mobile */
+    .sectionHeading {
+        margin-bottom: 3rem;
+    }
+
+    .sectionHeading h2 {
+        font-size: 2.2rem;
     }
 
     .menuGrid,
@@ -662,8 +787,74 @@
         gap: 3rem;
     }
 
-    .ingredientsGrid,
-    .reviewsGrid {
+    .menuFeatureImage {
+        height: 180px;
+        /* Slimmer cards */
+    }
+
+    .menuFeatureContent {
+        padding: 1.25rem;
+    }
+
+    .menuFeatureContent h3 {
+        font-size: 1.1rem;
+    }
+
+    .ingredientCard {
+        padding: 2rem 1.5rem;
+    }
+
+    .ingredientIcon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+    }
+
+    .reviewCard {
+        padding: 2rem;
+    }
+
+    .nutritionLayout {
         grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .nutritionLabel {
+        padding: 1.25rem;
+    }
+
+    .ingredientsGrid,
+    .reviewsGrid,
+    .featuredMenuGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .dishName {
+        font-size: 2.1rem;
+    }
+
+    .dishDescription {
+        max-width: 100%;
+    }
+
+    .heroActions {
+        flex-direction: row;
+        /* Keep them side-by-side unless very small */
+    }
+
+    .heroActions .btn {
+        padding: 0.7rem 1rem;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .ctaSection h2 {
+        font-size: 2.5rem;
+    }
+
+    .ctaSection p {
+        font-size: 1.1rem;
     }
 }

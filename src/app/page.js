@@ -158,8 +158,10 @@ export default function Home() {
 
   const handleLoadingProgress = (progress) => {
     setLoadingProgress(progress);
-    if (progress >= 100) {
-      setTimeout(() => setIsLoading(false), 800);
+    // Optimization: Open the site as soon as the critical frames (35%) are ready.
+    // The rest will load smoothly in the background while the user explores.
+    if (progress >= 35) {
+      setTimeout(() => setIsLoading(false), 500);
     }
   };
 

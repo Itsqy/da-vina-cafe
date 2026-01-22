@@ -94,22 +94,22 @@ export default function ScrollWebPPlayer({
 
         const loadImages = async () => {
             // Priority Strategy:
-            const p1 = []; // Start
-            for (let i = 0; i < Math.min(10, frameCount); i++) p1.push(i);
+            const p1 = []; // Immediate: First 20 frames (Essential for initial view)
+            for (let i = 0; i < Math.min(20, frameCount); i++) p1.push(i);
 
-            const p2 = []; // Intermediate coverage
-            for (let i = 0; i < frameCount; i += 8) if (!p1.includes(i)) p2.push(i);
+            const p2 = []; // High: Every 4th frame (Ensures smooth basic animation)
+            for (let i = 0; i < frameCount; i += 4) if (!p1.includes(i)) p2.push(i);
 
-            const p3 = []; // Finer coverage
+            const p3 = []; // Normal: Every 2nd frame
             for (let i = 0; i < frameCount; i += 2) if (!p1.includes(i) && !p2.includes(i)) p3.push(i);
 
-            const p4 = []; // All others
+            const p4 = []; // Background: All others
             for (let i = 0; i < frameCount; i++) if (!p1.includes(i) && !p2.includes(i) && !p3.includes(i)) p4.push(i);
 
             const allIndices = [...p1, ...p2, ...p3, ...p4];
 
             const loadBatch = async (indices) => {
-                const batchSize = 6; // Balance between speed and browser stress
+                const batchSize = 8; // Slightly increased for faster concurrent fetching
                 for (let i = 0; i < indices.length; i += batchSize) {
                     if (!isMounted) return;
                     const batch = indices.slice(i, i + batchSize);
@@ -138,7 +138,7 @@ export default function ScrollWebPPlayer({
                         img.src = `${sequencePath}${String(idx).padStart(3, '0')}.webp`;
                     })));
 
-                    // Small yield for main thread
+                    // Yield for main thread optimization
                     if (i % (batchSize * 2) === 0) await new Promise(r => setTimeout(r, 0));
                 }
             };

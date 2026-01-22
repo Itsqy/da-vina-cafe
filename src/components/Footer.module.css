@@ -116,8 +116,55 @@
 }
 
 @media (max-width: 768px) {
+    .footer {
+        padding: 4rem 0 2rem;
+        text-align: center;
+    }
+
     .grid {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .description {
+        margin: 0 auto 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .socials {
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .socials a {
+        width: 36px;
+        height: 36px;
+    }
+
+    .links h4,
+    .contact h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .contact ul li {
+        justify-content: center;
+        font-size: 0.9rem;
+    }
+
+    .statusBadge {
+        justify-content: center;
+        margin-top: 1rem !important;
+    }
+
+    .bottom {
+        margin-top: 3rem;
+        font-size: 0.8rem;
     }
 }

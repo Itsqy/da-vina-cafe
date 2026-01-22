@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Menu, X } from 'lucide-react';
 import styles from './Navbar.module.css';
 
 const NAV_LINKS = [
@@ -17,6 +17,7 @@ export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [theme, setTheme] = useState('dark');
     const [activeSection, setActiveSection] = useState('');
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -44,23 +45,45 @@ export default function Navbar() {
         setTheme(prev => prev === 'dark' ? 'light' : 'dark');
     };
 
+    const handleLinkClick = () => {
+        setIsMenuOpen(false);
+    };
+
     return (
-        <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''}`}>
+        <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''} ${isMenuOpen ? styles.menuOpen : ''}`}>
             <div className={`container ${styles.navContainer}`}>
-                <Link href="/" className={styles.logo}>
+                <Link href="/" className={styles.logo} onClick={handleLinkClick}>
                     Cafe Da Vina
                 </Link>
 
-                <div className={styles.navLinks}>
+                {/* Mobile Menu Button */}
+                <button
+                    className={styles.menuToggle}
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label="Toggle Menu"
+                >
+                    {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                </button>
+
+                <div className={`${styles.navLinks} ${isMenuOpen ? styles.navLinksMobile : ''}`}>
                     {NAV_LINKS.map(link => (
                         <a
                             key={link.href}
                             href={link.href}
+                            onClick={handleLinkClick}
                             className={`${styles.navLink} ${activeSection === link.href.substring(1) ? styles.active : ''}`}
                         >
                             {link.label}
                         </a>
                     ))}
+                    <div className={styles.mobileActions}>
+                        <button onClick={toggleTheme} className={styles.themeToggle}>
+                            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />} Mode
+                        </button>
+                        <Link href="/booking" className={styles.bookingBtn} onClick={handleLinkClick}>
+                            Book a Table
+                        </Link>
+                    </div>
                 </div>
 
                 <div className={styles.navActions}>

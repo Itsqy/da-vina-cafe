@@ -150,11 +150,34 @@
 }
 
 @media (max-width: 991px) {
+    .header {
+        padding: 8rem 0 3rem;
+    }
+
     .bookingGrid {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
     .header h1 {
-        font-size: 3rem;
+        font-size: 2.5rem;
+    }
+
+    .stepCard {
+        padding: 2rem 1.5rem;
+    }
+
+    .modal {
+        padding: 2.5rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .timeGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .header h1 {
+        font-size: 2rem;
     }
 }
