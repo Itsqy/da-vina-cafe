@@ -1,8 +1,34 @@
+"use client";
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Instagram, Facebook, Twitter, MapPin, Phone, Clock } from 'lucide-react';
+import { Instagram, Facebook, Twitter, MapPin, Phone, Mail } from 'lucide-react';
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import styles from './Footer.module.css';
 
 export default function Footer() {
+    const [config, setConfig] = useState({
+        address: '107 Astor Terrace, Spring Hill QLD 4000',
+        phone: '+61 431 119 221',
+        email: 'hello@cafedavina.com',
+        isOpen: true
+    });
+
+    useEffect(() => {
+        const fetchConfig = async () => {
+            try {
+                const docRef = doc(db, "configs", "site");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setConfig(docSnap.data());
+                }
+            } catch (err) {
+                console.error("Error fetching footer config:", err);
+            }
+        };
+        fetchConfig();
+    }, []);
+
     return (
         <footer className={styles.footer}>
             <div className={`${styles.container} container`}>
@@ -10,12 +36,12 @@ export default function Footer() {
                     <div className={styles.info}>
                         <h3 className={styles.logo}>Cafe Da-Vina</h3>
                         <p className={styles.description}>
-                            A lovely place for a delightful meal, serving comforting and tasty food in a cozy and inviting environment.
+                            Modern Fusion Café serving comforting and tasty food in a cozy and inviting environment.
                         </p>
                         <div className={styles.socials}>
-                            <a href="#"><Instagram size={20} /></a>
-                            <a href="#"><Facebook size={20} /></a>
-                            <a href="#"><Twitter size={20} /></a>
+                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
+                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><Twitter size={20} /></a>
                         </div>
                     </div>
 
@@ -32,9 +58,13 @@ export default function Footer() {
                     <div className={styles.contact}>
                         <h4>Contact Us</h4>
                         <ul>
-                            <li><MapPin size={18} /> 107 Astor Terrace, Spring Hill QLD 4000</li>
-                            <li><Phone size={18} /> +61 431 119 221</li>
-                            <li><Clock size={18} /> Opens 5.30 am Thu</li>
+                            <li><MapPin size={18} /> {config.address}</li>
+                            <li><Phone size={18} /> {config.phone}</li>
+                            <li><Mail size={18} /> {config.email}</li>
+                            <li className={styles.statusBadge}>
+                                <span className={config.isOpen ? styles.dotOpen : styles.dotClosed}></span>
+                                <strong>{config.isOpen ? 'Open Now' : 'Closed'}</strong>
+                            </li>
                         </ul>
                     </div>
                 </div>

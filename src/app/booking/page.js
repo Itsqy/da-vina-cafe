@@ -28,6 +28,7 @@ export default function BookingPage() {
     const [isError, setIsError] = useState(false);
     const [bookedSlots, setBookedSlots] = useState([]);
     const [bookingId, setBookingId] = useState('');
+    const [honeypot, setHoneypot] = useState(''); // Protection against bots
 
     useEffect(() => {
         if (selectedDate) {
@@ -49,13 +50,28 @@ export default function BookingPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // 1. Honeypot check (Bots fill hidden fields)
+        if (honeypot) {
+            console.warn("Bot detected via honeypot.");
+            return;
+        }
+
+        // 2. Cooldown check (DDOS/Spam protection)
+        const lastBooking = localStorage.getItem('last_booking_time');
+        const now = Date.now();
+        if (lastBooking && now - parseInt(lastBooking) < 60000) { // 1 minute cooldown
+            alert("Please wait a moment before making another booking.");
+            return;
+        }
+
         if (!selectedDate || !selectedTime || !email) return;
 
         setIsSubmitting(true);
         const generatedBookingId = 'DVN-' + Math.random().toString(36).substring(2, 8).toUpperCase();
 
         try {
-            // 1. Create booking in Firestore
+            // 3. Create booking in Firestore
             await addDoc(collection(db, 'bookings'), {
                 bookingId: generatedBookingId,
                 name,
@@ -67,7 +83,7 @@ export default function BookingPage() {
                 createdAt: Timestamp.now()
             });
 
-            // 2. Trigger Email via 'mail' collection (Firebase Extension)
+            // 4. Trigger Email via 'mail' collection (Firebase Extension)
             await addDoc(collection(db, 'mail'), {
                 to: email,
                 message: {
@@ -89,6 +105,9 @@ export default function BookingPage() {
           `,
                 }
             });
+
+            // Set cooldown in localStorage
+            localStorage.setItem('last_booking_time', Date.now().toString());
 
             setBookingId(generatedBookingId);
             setIsBooked(true);
@@ -169,6 +188,16 @@ export default function BookingPage() {
                                 </div>
 
                                 <form onSubmit={handleSubmit} className={styles.form}>
+                                    {/* Honeypot field (hidden from users, bot trap) */}
+                                    <div style={{ display: 'none' }}>
+                                        <input
+                                            type="text"
+                                            value={honeypot}
+                                            onChange={e => setHoneypot(e.target.value)}
+                                            tabIndex="-1"
+                                            autoComplete="off"
+                                        />
+                                    </div>
                                     <div className={styles.formGroup}>
                                         <label>Name</label>
                                         <input value={name} onChange={e => setName(e.target.value)} required placeholder="Your Name" />

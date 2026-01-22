@@ -389,48 +389,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className={styles.footer}>
-          <div className="container">
-            <div className={styles.footerGrid}>
-              <div className={styles.footerBrand}>
-                <h3>Cafe Da Vina</h3>
-                <p>Modern Fusion Café</p>
-                <div className={styles.footerSocials}>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><Twitter size={20} /></a>
-                </div>
-              </div>
-              <div className={styles.footerLinks}>
-                <h4>Quick Links</h4>
-                <Link href="#menu">Menu</Link>
-                <Link href="#ingredients">Ingredients</Link>
-                <Link href="#reviews">Reviews</Link>
-              </div>
-              <div className={styles.footerContact}>
-                <h4>Contact</h4>
-                <p><MapPin size={16} /> {siteConfig.address}</p>
-                <p><Phone size={16} /> {siteConfig.phone}</p>
-                <p><Mail size={16} /> {siteConfig.email}</p>
-                <div className={styles.statusBadge}>
-                  <span className={siteConfig.isOpen ? styles.dotOpen : styles.dotClosed}></span>
-                  {siteConfig.isOpen ? 'Open Now' : 'Closed'}
-                </div>
-              </div>
-            </div>
-            <div className={styles.footerBottom}>
-              <p>&copy; 2026 Cafe Da Vina. All rights reserved.</p>
-              <div className={styles.footerLegal}>
-                <Link href="/privacy">Privacy Policy</Link>
-                <Link href="/terms">Terms of Service</Link>
-              </div>
-            </div>
-          </div>
-        </footer>
       </main>
     </div>
   );
 }
-
