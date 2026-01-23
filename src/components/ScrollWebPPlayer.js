@@ -30,19 +30,14 @@ export default function ScrollWebPPlayer({
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        // Fallback logic: Find closest loaded image
         let img = imagesRef.current[index];
 
-        // Exact match not found? Search outwards
         if (!img || !img.complete) {
-            // Check radius 1, then 2, etc. (more efficient than full loops)
             for (let i = 1; i < 50; i++) {
-                // Check previous
                 if (index - i >= 0 && imagesRef.current[index - i] && imagesRef.current[index - i].complete) {
                     img = imagesRef.current[index - i];
                     break;
                 }
-                // Check next
                 if (index + i < frameCount && imagesRef.current[index + i] && imagesRef.current[index + i].complete) {
                     img = imagesRef.current[index + i];
                     break;
@@ -55,7 +50,6 @@ export default function ScrollWebPPlayer({
         const ctx = canvas.getContext('2d');
         const dpr = window.devicePixelRatio || 1;
 
-        // Ensure accurate canvas sizing
         const canvasWidth = canvas.width / dpr;
         const canvasHeight = canvas.height / dpr;
 
@@ -64,16 +58,29 @@ export default function ScrollWebPPlayer({
 
         let drawWidth, drawHeight, offsetX, offsetY;
 
-        if (canvasRatio > imgRatio) {
-            drawWidth = canvasWidth;
-            drawHeight = canvasWidth / imgRatio;
-            offsetX = 0;
+        // Custom responsive logic: "Better Fit" for mobile
+        const isMobileView = canvasWidth <= 768;
+
+        if (isMobileView) {
+            // On mobile, prioritize showing the full width of the dish 
+            // even if it doesn't cover the full height (it will blend with background)
+            drawWidth = canvasWidth * 1.1; // Slight overflow for edge blending
+            drawHeight = drawWidth / imgRatio;
+            offsetX = (canvasWidth - drawWidth) / 2;
             offsetY = (canvasHeight - drawHeight) / 2;
         } else {
-            drawWidth = canvasHeight * imgRatio;
-            drawHeight = canvasHeight;
-            offsetX = (canvasWidth - drawWidth) / 2;
-            offsetY = 0;
+            // Desktop: standard cover logic
+            if (canvasRatio > imgRatio) {
+                drawWidth = canvasWidth;
+                drawHeight = canvasWidth / imgRatio;
+                offsetX = 0;
+                offsetY = (canvasHeight - drawHeight) / 2;
+            } else {
+                drawWidth = canvasHeight * imgRatio;
+                drawHeight = canvasHeight;
+                offsetX = (canvasWidth - drawWidth) / 2;
+                offsetY = 0;
+            }
         }
 
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -151,10 +158,15 @@ export default function ScrollWebPPlayer({
         return () => { isMounted = false; };
     }, [sequencePath, frameCount, drawImage, frameIndex, onProgress]);
 
-    // Handle Resize
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Handle Resize & Mobile Detection
     useEffect(() => {
         const handleResize = () => {
             const canvas = canvasRef.current;
+            const mobile = window.innerWidth <= 768;
+            setIsMobile(mobile);
+
             if (canvas) {
                 const dpr = window.devicePixelRatio || 1;
                 canvas.width = window.innerWidth * dpr;
@@ -192,7 +204,8 @@ export default function ScrollWebPPlayer({
                 objectFit: 'cover',
                 pointerEvents: 'none',
                 zIndex: 0,
-                transform: 'scale(1.15)'
+                transform: isMobile ? 'scale(1.05)' : 'scale(1.08)',
+                transition: 'transform 0.5s ease'
             }}
         />
     );

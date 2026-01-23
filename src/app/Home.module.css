@@ -13,6 +13,13 @@
     z-index: 10;
 }
 
+@media (max-width: 991px) {
+    .heroScrollWrapper {
+        height: 180vh;
+        /* Faster scroll on mobile */
+    }
+}
+
 /* Hero Section - Sticky Pinning */
 .hero {
     position: sticky;
@@ -77,7 +84,7 @@
 }
 
 .heroCenter {
-    /* Empty for visual clarity of background */
+    flex: 1;
 }
 
 /* Right Side Navigation */
@@ -629,13 +636,20 @@
 
 @media (max-width: 991px) {
     .contentSection {
-        padding: 5rem 0;
-        /* Reduced from 8-10rem for mobile */
+        padding: 4rem 0;
+        /* Further reduced from 5rem */
+    }
+
+    .sectionHeading {
+        margin-bottom: 2.5rem;
     }
 
     .hero {
-        align-items: flex-end;
-        /* Align grid to bottom */
+        align-items: center;
+        /* Center for better dish visibility */
+        height: 85vh;
+        /* More compact height to fit landscape dish */
+        min-height: 500px;
     }
 
     /* Add a subtle dark gradient at the bottom for readability on mobile */
@@ -777,27 +791,58 @@
     }
 
     .sectionHeading h2 {
-        font-size: 2.2rem;
+        font-size: 1.8rem;
+        /* Smaller section titles */
     }
 
-    .menuGrid,
-    .nutritionLayout,
     .footerGrid {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
+    }
+
+    .footer {
+        padding: 4rem 0 2rem;
+    }
+
+    .footerBrand h3 {
+        font-size: 1.5rem;
+    }
+
+    .footerLinks h4,
+    .footerContact h4 {
+        margin-bottom: 1rem;
+        font-size: 0.8rem;
+    }
+
+    .footerLinks a,
+    .footerContact p {
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
     }
 
     .menuFeatureImage {
-        height: 180px;
-        /* Slimmer cards */
+        height: 140px;
+        /* Smaller image height */
     }
 
     .menuFeatureContent {
-        padding: 1.25rem;
+        padding: 1rem;
+        /* More compact padding */
     }
 
     .menuFeatureContent h3 {
-        font-size: 1.1rem;
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .menuFeatureContent p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        margin-bottom: 0.5rem;
+    }
+
+    .menuFeaturePrice {
+        font-size: 0.95rem;
     }
 
     .ingredientCard {
@@ -816,7 +861,17 @@
 
     .nutritionLayout {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1.5rem;
+    }
+
+    .nutritionIntro h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .nutritionIntro p {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
     }
 
     .nutritionLabel {
@@ -824,9 +879,15 @@
     }
 
     .ingredientsGrid,
-    .reviewsGrid,
-    .featuredMenuGrid {
+    .reviewsGrid {
         grid-template-columns: 1fr;
+    }
+
+    .featuredMenuGrid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns for a more compact look */
+        gap: 1rem;
+        /* Smaller gap */
     }
 }
 

@@ -21,7 +21,7 @@ const DEFAULT_DISHES = [
     description: "A delicious blend of rich salmon and creamy avocado, served with a light citrus dressing.",
     themeColor: "#8b5e3c",
     sequencePath: "/avocado-salmon-frame/frame_",
-    frameCount: 147
+    frameCount: 88
   },
   {
     id: 'grilled-tuna',
@@ -30,7 +30,7 @@ const DEFAULT_DISHES = [
     description: "Perfectly grilled tuna, served with fresh greens and a smoky dressing.",
     themeColor: "#2a9d8f",
     sequencePath: "/avocado-salmon-frame/frame_",
-    frameCount: 147
+    frameCount: 88
   },
   {
     id: 'mediterranean-salad',
@@ -39,7 +39,7 @@ const DEFAULT_DISHES = [
     description: "A refreshing salad of mixed greens, tomatoes, olives, and feta cheese with a zesty vinaigrette.",
     themeColor: "#e9c46a",
     sequencePath: "/avocado-salmon-frame/frame_",
-    frameCount: 147
+    frameCount: 88
   }
 ];
 
@@ -140,6 +140,18 @@ export default function Home() {
     }
   }, [currentDish]);
 
+  // Simulate loading for the video (since we don't have individual frame progress anymore)
+  // Handle WebP Loading Progress
+  const handleLoadingProgress = (progress) => {
+    setLoadingProgress(progress);
+    // Optimization: Open the site as soon as the critical frames (35%) are ready.
+    // The rest will load smoothly in the background while the user explores.
+    if (progress >= 35) {
+      setTimeout(() => setIsLoading(false), 500);
+    }
+  };
+
+
   const handleNext = () => {
     setIsSwitching(true);
     setTimeout(() => {
@@ -154,15 +166,6 @@ export default function Home() {
       setCurrentIndex((prev) => (prev - 1 + dishes.length) % dishes.length);
       setIsSwitching(false);
     }, 500);
-  };
-
-  const handleLoadingProgress = (progress) => {
-    setLoadingProgress(progress);
-    // Optimization: Open the site as soon as the critical frames (35%) are ready.
-    // The rest will load smoothly in the background while the user explores.
-    if (progress >= 35) {
-      setTimeout(() => setIsLoading(false), 500);
-    }
   };
 
   return (

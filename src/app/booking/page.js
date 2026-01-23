@@ -79,7 +79,7 @@ export default function BookingPage() {
                 time: selectedTime,
                 guests: numPeople,
                 email: email,
-                status: 'confirmed',
+                status: 'pending',
                 createdAt: Timestamp.now()
             });
 
@@ -234,9 +234,9 @@ export default function BookingPage() {
                     <div className={styles.modalOverlay}>
                         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className={styles.modal}>
                             <CheckCircle size={64} className={styles.successIcon} />
-                            <h2>Confirmed!</h2>
+                            <h2>Request Received!</h2>
                             <p>Reference: <strong>{bookingId}</strong></p>
-                            <p>We've sent a confirmation email to {email}.</p>
+                            <p>Your reservation is <strong>pending</strong>. We've sent a summary email to {email}.</p>
                             <button className="btn btn-primary" onClick={() => window.location.href = '/'}>Finish</button>
                         </motion.div>
                     </div>

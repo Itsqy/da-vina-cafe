@@ -1,6 +1,5 @@
 import './globals.css';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import ClientLayout from '@/components/ClientLayout';
 
 export const metadata = {
   title: 'Cafe Da-Vina | Cozy & Delicious Experience',
@@ -11,11 +10,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Navbar />
-        <main style={{ minHeight: '80vh', paddingTop: '80px' }}>
+        <ClientLayout>
           {children}
-        </main>
-        <Footer />
+        </ClientLayout>
       </body>
     </html>
   );

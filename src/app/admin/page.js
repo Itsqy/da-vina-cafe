@@ -194,6 +194,17 @@ export default function AdminDashboard() {
         }
     };
 
+    // Booking management
+    const updateBookingStatus = async (id, newStatus) => {
+        try {
+            await setDoc(doc(db, "bookings", id), { status: newStatus }, { merge: true });
+            setBookings(prev => prev.map(b => b.id === id ? { ...b, status: newStatus } : b));
+            // Optional: alert(`Booking ${newStatus}!`);
+        } catch (err) {
+            alert("Error updating status: " + err.message);
+        }
+    };
+
     // Filtered bookings
     const filteredBookings = bookings.filter(b => {
         if (bookingFilter === 'today') {
@@ -405,7 +416,7 @@ export default function AdminDashboard() {
                                 <span>Guest</span>
                                 <span>Date & Time</span>
                                 <span>People</span>
-                                <span>Status</span>
+                                <span>Action</span>
                             </div>
                             {filteredBookings.map((b) => (
                                 <div key={b.id} className={styles.tableRow}>
@@ -419,7 +430,19 @@ export default function AdminDashboard() {
                                         <span>{b.time}</span>
                                     </div>
                                     <span>{b.guests} Pers.</span>
-                                    <span className={styles.statusBadgeConfirmed}>{b.status}</span>
+                                    <select
+                                        className={
+                                            b.status === 'confirmed' ? styles.statusBadgeConfirmed :
+                                                b.status === 'cancelled' ? styles.statusBadgeCancelled :
+                                                    styles.statusBadgePending
+                                        }
+                                        value={b.status || 'pending'}
+                                        onChange={(e) => updateBookingStatus(b.id, e.target.value)}
+                                    >
+                                        <option value="pending">Pending</option>
+                                        <option value="confirmed">Confirmed</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
                                 </div>
                             ))}
                             {filteredBookings.length === 0 && (

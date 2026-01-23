@@ -248,7 +248,7 @@
 
 .tableHead {
     display: grid;
-    grid-template-columns: 120px 2fr 1.5fr 100px 100px;
+    grid-template-columns: 120px 2fr 1.5fr 100px 150px;
     padding: 1.5rem 2rem;
     background: rgba(255, 255, 255, 0.05);
     font-weight: 600;
@@ -259,7 +259,7 @@
 
 .tableRow {
     display: grid;
-    grid-template-columns: 120px 2fr 1.5fr 100px 100px;
+    grid-template-columns: 120px 2fr 1.5fr 100px 150px;
     padding: 1.5rem 2rem;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -297,12 +297,40 @@
 .statusBadgeConfirmed {
     background: rgba(76, 175, 80, 0.1);
     color: #4caf50;
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    text-align: center;
+    outline: none;
+    cursor: pointer;
+}
+
+.statusBadgePending {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.2);
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    outline: none;
+    cursor: pointer;
+}
+
+.statusBadgeCancelled {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+    border: 1px solid rgba(244, 67, 54, 0.2);
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    outline: none;
+    cursor: pointer;
 }
 
 .emptyMsg {
@@ -311,3 +339,176 @@
     color: var(--text-muted);
     font-style: italic;
 }
+.actionBtnConfirm {
+    background: rgba(76, 175, 80, 0.1);
+    border: none;
+    color: #4CAF50;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.actionBtnConfirm:hover {
+    background: rgba(76, 175, 80, 0.2);
+    transform: translateY(-2px);
+}
+
+.actionBtnDelete {
+    background: rgba(244, 67, 54, 0.1);
+    border: none;
+    color: #F44336;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.actionBtnDelete:hover {
+    background: rgba(244, 67, 54, 0.2);
+    transform: translateY(-2px);
+}
+
+
+/* Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modalContent {
+    background: var(--bg-secondary);
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+.modalIcon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.modalIcon.success {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+}
+
+.modalIcon.error {
+    background: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+}
+
+.modalContent h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.modalContent p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.modalBtn {
+    padding: 0.8rem 2rem;
+    border-radius: 10px;
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modalBtn:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+
+/* Loading Spinner */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+.logTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.logTable th,
+.logTable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logTable th {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.logType {
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.typeInfo { background: rgba(33, 150, 243, 0.1); color: #2196f3; }
+.typeSuccess { background: rgba(76, 175, 80, 0.1); color: #4CAF50; }
+.typeWarning { background: rgba(255, 152, 0, 0.1); color: #ff9800; }
+.typeError { background: rgba(244, 67, 54, 0.1); color: #f44336; }
+
