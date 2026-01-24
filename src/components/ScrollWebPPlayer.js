@@ -208,7 +208,7 @@ export default function ScrollWebPPlayer({
                 objectFit: 'cover',
                 pointerEvents: 'none',
                 zIndex: 0,
-                transform: isMobile ? 'scale(1.05)' : 'scale(1.08)',
+                transform: isMobile ? 'scale(1.04)' : 'scale(1.06)',
                 transition: 'transform 0.5s ease'
             }}
         />
