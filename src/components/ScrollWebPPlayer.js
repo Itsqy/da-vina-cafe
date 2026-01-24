@@ -64,12 +64,12 @@ export default function ScrollWebPPlayer({
         const isMobileView = canvasWidth <= 768;
 
         if (isMobileView) {
-            // On mobile, prioritize showing the full width of the dish 
-            // even if it doesn't cover the full height (it will blend with background)
-            drawWidth = canvasWidth * 1.1; // Slight overflow for edge blending
+            // On mobile, keep the size but position it higher (30% of screen height) 
+            // so it sits clearly above the bottom-aligned hero text
+            drawWidth = canvasWidth * 1.1;
             drawHeight = drawWidth / imgRatio;
             offsetX = (canvasWidth - drawWidth) / 2;
-            offsetY = (canvasHeight - drawHeight) / 2;
+            offsetY = (canvasHeight * 0.3) - (drawHeight / 2);
         } else {
             // Desktop: standard cover logic
             if (canvasRatio > imgRatio) {

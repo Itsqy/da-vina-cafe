@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import {
   Instagram, Facebook, Twitter, ChevronUp, ChevronDown,
-  Leaf, Info, MessageSquare, HelpCircle, Mail, MapPin, Phone, Clock
+  Leaf, Info, MessageSquare, HelpCircle, Mail, MapPin, Phone, Clock, ArrowRight
 } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
@@ -282,7 +282,12 @@ export default function Home() {
                   <div className={styles.menuFeatureContent}>
                     <h3>{item.name}</h3>
                     <p>{item.description}</p>
-                    <span className={styles.menuFeaturePrice}>{item.price}</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span className={styles.menuFeaturePrice}>{item.price}</span>
+                      <Link href={`/product/${item.id}`} className={styles.detailLink}>
+                        View Details <ArrowRight size={16} />
+                      </Link>
+                    </div>
                   </div>
                 </motion.div>
               ))}
