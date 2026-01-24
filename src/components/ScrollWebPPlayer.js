@@ -4,7 +4,9 @@ import { useScroll, useSpring, useMotionValueEvent, useTransform } from 'framer-
 
 export default function ScrollWebPPlayer({
     sequencePath = '/avocado-salmon-frame/frame_',
-    frameCount = 147,
+    frameCount = 142,
+    startIndex = 0,
+    extension = 'webp',
     onProgress,
     containerRef // Add this prop
 }) {
@@ -24,7 +26,7 @@ export default function ScrollWebPPlayer({
         imagesRef.current = new Array(frameCount).fill(null);
         setIsLoaded(false);
         if (onProgress) onProgress(0);
-    }, [sequencePath, frameCount]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [sequencePath, frameCount, startIndex, extension]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const drawImage = useCallback((index) => {
         const canvas = canvasRef.current;
@@ -142,7 +144,9 @@ export default function ScrollWebPPlayer({
                             updateProgress();
                             resolve();
                         };
-                        img.src = `${sequencePath}${String(idx).padStart(3, '0')}.webp`;
+                        // Use startIndex to offset the filename index
+                        const fileIdx = idx + startIndex;
+                        img.src = `${sequencePath}${String(fileIdx).padStart(3, '0')}.${extension}`;
                     })));
 
                     // Yield for main thread optimization
@@ -156,7 +160,7 @@ export default function ScrollWebPPlayer({
         loadImages();
 
         return () => { isMounted = false; };
-    }, [sequencePath, frameCount, drawImage, frameIndex, onProgress]);
+    }, [sequencePath, frameCount, startIndex, extension, drawImage, frameIndex, onProgress]);
 
     const [isMobile, setIsMobile] = useState(false);
 

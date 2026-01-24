@@ -1,514 +1,565 @@
-.loginPage {
-    height: 100vh;
+/* Admin Dashboard Premium Theme */
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    background-color: #0f1113;
+    /* Deep obsidian background */
+    color: #f8fafc;
+    font-family: var(--font-body), sans-serif;
+    --accent-color-rgb: 139, 94, 60;
+    /* Fallback for #8b5e3c */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 280px;
+    background: #161a1d;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
+    padding: 2.5rem 1.5rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+}
+
+.sidebarHeader {
+    margin-bottom: 3.5rem;
+    padding: 0 0.75rem;
+}
+
+.sidebarHeader h3 {
+    font-family: var(--font-heading), serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #ecd06f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+}
+
+.sidebarNav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    flex: 1;
+}
+
+.sidebarNav button {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    background: var(--bg-primary);
-    padding: 1rem;
-}
-
-.loginCard {
-    background: var(--bg-secondary);
-    padding: 3rem;
-    border-radius: 20px;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
     width: 100%;
-    max-width: 450px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    text-align: center;
+    font-size: 0.95rem;
 }
 
-.loginCard h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-main);
+.sidebarNav button:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: #f8fafc;
+    transform: translateX(4px);
 }
 
-.loginCard p {
-    color: var(--text-muted);
+.sidebarNav button.active {
+    background: rgba(var(--accent-color-rgb), 0.1);
+    border-color: rgba(var(--accent-color-rgb), 0.2);
+    color: var(--accent-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.sidebarNav button svg {
+    transition: transform 0.25s ease;
+    opacity: 0.7;
+}
+
+.sidebarNav button.active svg {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.logoutBtn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin-top: auto;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+
+.logoutBtn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Main Content Area */
+.mainContent {
+    flex: 1;
+    padding: 3rem 4rem;
+    background: radial-gradient(circle at top right, rgba(233, 196, 106, 0.03), transparent 40%);
+}
+
+.mainHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3.5rem;
+}
+
+.mainHeader h2 {
+    font-family: var(--font-heading), serif;
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #fff;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #1e293b;
+    padding: 0.6rem 1.25rem;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.85rem;
+    color: #94a3b8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Cards and Containers */
+.contentCard {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.mgmtHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 2rem;
 }
 
-.loginForm {
+.mgmtHeader h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Custom Table Styling */
+.tableWrapper {
+    background: #161a1d;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.tableWrapper table {
+    width: 100%;
+    border-collapse: collapse;
     text-align: left;
-    display: flex;
-    flex-direction: column;
+}
+
+.tableWrapper th {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748b;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tableWrapper td {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.tableWrapper tr:last-child td {
+    border-bottom: none;
+}
+
+.tableWrapper tr:hover td {
+    background: rgba(255, 255, 255, 0.01);
+}
+
+/* Status Badges */
+.statusBadgeConfirmed {
+    background: rgba(34, 197, 94, 0.1);
+    color: #4ade80;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.statusBadgePending {
+    background: rgba(234, 179, 8, 0.1);
+    color: #facc15;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+/* Action Buttons */
+.actionBtnConfirm,
+.actionBtnDelete,
+.actionBtnEdit {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid transparent;
+    margin-right: 0.5rem;
+}
+
+.actionBtnConfirm {
+    background: rgba(34, 197, 94, 0.1);
+    color: #4ade80;
+}
+
+.actionBtnConfirm:hover {
+    background: #22c55e;
+    color: #fff;
+    transform: translateY(-2px) scale(1.1);
+}
+
+.actionBtnDelete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+}
+
+.actionBtnDelete:hover {
+    background: #ef4444;
+    color: #fff;
+    transform: translateY(-2px) scale(1.1);
+}
+
+.actionBtnEdit {
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+}
+
+.actionBtnEdit:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: translateY(-2px) scale(1.1);
+}
+
+/* Menu Item List Styling */
+.menuList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
 }
 
-.inputGroup {
+.menuItemRow {
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.menuItemRow:hover {
+    transform: translateY(-5px);
+    border-color: rgba(var(--accent-color-rgb), 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.menuItemRow img {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.itemMeta {
+    flex: 1;
+}
+
+.itemMeta h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    color: #fff;
+}
+
+.itemMeta p {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+/* Activity Logs */
+.logTable {
+    width: 100%;
+}
+
+.logType {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 5px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* Login Page Styling */
+.loginPage {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f172a;
+    background-image:
+        radial-gradient(circle at 0% 0%, rgba(233, 196, 106, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(38, 157, 143, 0.05) 0%, transparent 50%);
+}
+
+.loginCard {
+    background: #1e293b;
+    width: 100%;
+    max-width: 440px;
+    padding: 3.5rem;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.loginCard h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+}
+
+.loginCard p {
+    color: #94a3b8;
+    margin-bottom: 2.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.loginForm {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1.5rem;
+    text-align: left;
 }
 
 .inputGroup label {
-    font-size: 0.9rem;
-    color: var(--text-main);
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
 }
 
 .inputGroup input {
-    background: var(--bg-primary);
+    width: 100%;
+    background: #0f172a;
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
-    padding: 1rem;
-    border-radius: 10px;
-    width: 100%;
-    outline: none;
-    transition: var(--transition);
+    padding: 0.9rem 1.25rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s;
 }
 
 .inputGroup input:focus {
     border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(var(--accent-color-rgb), 0.1);
+    outline: none;
 }
 
 .errorMsg {
-    color: #ff4d4d;
+    color: #f87171;
     font-size: 0.85rem;
-    margin: 0;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    display: block;
 }
 
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Responsive Overrides */
+@media (max-width: 1024px) {
+    .mainContent {
+        padding: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 1.25rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebarNav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .sidebarNav button {
+        width: auto;
+        white-space: nowrap;
+    }
+
+    .mainContent {
+        padding: 2rem 1.25rem;
+    }
+}
+
+/* Settings & Dishes Mgmt */
+.settingsForm,
+.dishesList {
+    max-width: 600px;
+}
+
+.formGroup {
+    margin-bottom: 1.75rem;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.formGroup input,
+.formGroup textarea {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.9rem 1.25rem;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.formGroup textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.dishCard {
+    background: #1e293b;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 2rem;
+}
+
+.dishCard input,
+.dishCard textarea {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.emptyMsg {
+    text-align: center;
+    padding: 5rem 2rem;
+    color: #64748b;
+    font-style: normal;
+    background: rgba(255, 255, 255, 0.01);
+}
+
+/* Loading Overlay */
 .loading {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg-primary);
-    font-size: 1.5rem;
-}
-
-.adminPage {
-    min-height: 100vh;
-    background: var(--bg-primary);
-    color: var(--text-main);
-    padding: 2rem;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 4rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 2rem;
-}
-
-.tabs {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.tabs button {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-muted);
-    padding: 0.6rem 1.2rem;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-}
-
-.tabs button:hover {
-    border-color: var(--accent-color);
-    color: #fff;
-}
-
-.tabs button.activeTab {
-    background: var(--accent-color);
-    border-color: var(--accent-color);
-    color: #fff;
-}
-
-.content {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.dishesList {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.dishCard {
-    background: var(--bg-secondary);
-    padding: 2rem;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    box-shadow: var(--shadow);
-}
-
-.dishCard input,
-.dishCard textarea {
-    background: var(--bg-primary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    padding: 1rem;
-    border-radius: 8px;
-    font-family: inherit;
-}
-
-.dishCard textarea {
-    height: 100px;
-    resize: vertical;
-}
-
-.dishCard input[type="color"] {
-    height: 50px;
-    padding: 0;
-    cursor: pointer;
-    flex: 0 0 50px;
-}
-
-.inputRow {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.inputRow input {
-    flex: 1;
-}
-
-.imagePreview {
-    margin-bottom: 1rem;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 1rem;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-}
-
-/* Booking List Styles */
-.sectionHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.filterBar {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.filterBar button {
-    background: var(--bg-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-muted);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.3s ease;
-}
-
-.filterBar button.activeFilter {
-    border-color: var(--accent-color);
+    background: #0f1113;
     color: var(--accent-color);
-    background: rgba(var(--accent-color), 0.1);
-}
-
-.dateFilter {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--bg-secondary);
-    padding-right: 0.5rem;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dateFilter button {
-    border: none;
-}
-
-.dateFilter input {
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-family: inherit;
-    font-size: 0.85rem;
-    outline: none;
-    padding: 0;
-}
-
-.bookingTable {
-    background: var(--bg-secondary);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-}
-
-.tableHead {
-    display: grid;
-    grid-template-columns: 120px 2fr 1.5fr 100px 150px;
-    padding: 1.5rem 2rem;
-    background: rgba(255, 255, 255, 0.05);
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.tableRow {
-    display: grid;
-    grid-template-columns: 120px 2fr 1.5fr 100px 150px;
-    padding: 1.5rem 2rem;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: background 0.3s ease;
-}
-
-.tableRow:hover {
-    background: rgba(255, 255, 255, 0.02);
-}
-
-.refId {
-    font-family: monospace;
     font-weight: 700;
-    color: var(--accent-color);
-}
-
-.guestInfo,
-.dateTime {
-    display: flex;
-    flex-direction: column;
-}
-
-.guestInfo strong,
-.dateTime strong {
-    font-size: 1rem;
-    margin-bottom: 0.2rem;
-}
-
-.guestInfo span,
-.dateTime span {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-.statusBadgeConfirmed {
-    background: rgba(76, 175, 80, 0.1);
-    color: #4caf50;
-    border: 1px solid rgba(76, 175, 80, 0.2);
-    padding: 0.4rem 0.6rem;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    outline: none;
-    cursor: pointer;
 }
 
-.statusBadgePending {
-    background: rgba(255, 193, 7, 0.1);
-    color: #ffc107;
-    border: 1px solid rgba(255, 193, 7, 0.2);
-    padding: 0.4rem 0.6rem;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    outline: none;
-    cursor: pointer;
-}
-
-.statusBadgeCancelled {
-    background: rgba(244, 67, 54, 0.1);
-    color: #f44336;
-    border: 1px solid rgba(244, 67, 54, 0.2);
-    padding: 0.4rem 0.6rem;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    outline: none;
-    cursor: pointer;
-}
-
-.emptyMsg {
-    text-align: center;
-    padding: 4rem;
-    color: var(--text-muted);
-    font-style: italic;
-}
-.actionBtnConfirm {
-    background: rgba(76, 175, 80, 0.1);
-    border: none;
-    color: #4CAF50;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.actionBtnConfirm:hover {
-    background: rgba(76, 175, 80, 0.2);
-    transform: translateY(-2px);
-}
-
-.actionBtnDelete {
-    background: rgba(244, 67, 54, 0.1);
-    border: none;
-    color: #F44336;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.actionBtnDelete:hover {
-    background: rgba(244, 67, 54, 0.2);
-    transform: translateY(-2px);
-}
-
-
-/* Modal Styles */
+/* Modal Enhancements */
 .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    animation: fadeIn 0.3s ease;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
 }
 
 .modalContent {
-    background: var(--bg-secondary);
-    padding: 2.5rem;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 450px;
-    text-align: center;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    animation: slideUp 0.3s ease;
-}
-
-.modalIcon {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-}
-
-.modalIcon.success {
-    background: rgba(76, 175, 80, 0.1);
-    color: #4CAF50;
-}
-
-.modalIcon.error {
-    background: rgba(244, 67, 54, 0.1);
-    color: #F44336;
-}
-
-.modalContent h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-main);
-}
-
-.modalContent p {
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-    line-height: 1.6;
+    background: #1e293b;
+    padding: 3.5rem 2.5rem;
 }
 
 .modalBtn {
-    padding: 0.8rem 2rem;
-    border-radius: 10px;
-    background: var(--accent-color);
-    color: #fff;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.modalBtn:hover {
-    filter: brightness(1.2);
-    transform: translateY(-2px);
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-
-/* Loading Spinner */
-.spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-
-.logTable {
     width: 100%;
-    border-collapse: collapse;
-}
-
-.logTable th,
-.logTable td {
     padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 1rem;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #ecd06f 100%);
+    color: #0f172a;
 }
-
-.logTable th {
-    color: var(--text-muted);
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.logType {
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.typeInfo { background: rgba(33, 150, 243, 0.1); color: #2196f3; }
-.typeSuccess { background: rgba(76, 175, 80, 0.1); color: #4CAF50; }
-.typeWarning { background: rgba(255, 152, 0, 0.1); color: #ff9800; }
-.typeError { background: rgba(244, 67, 54, 0.1); color: #f44336; }
-

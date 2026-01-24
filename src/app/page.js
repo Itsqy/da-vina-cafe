@@ -20,8 +20,10 @@ const DEFAULT_DISHES = [
     subtitle: "FRESH & HEALTHY",
     description: "A delicious blend of rich salmon and creamy avocado, served with a light citrus dressing.",
     themeColor: "#8b5e3c",
-    sequencePath: "/avocado-salmon-frame/frame_",
-    frameCount: 88
+    sequencePath: "/avocado-salmon-frame/ezgif-frame-",
+    frameCount: 79,
+    startIndex: 74,
+    extension: 'png'
   },
   {
     id: 'grilled-tuna',
@@ -29,8 +31,10 @@ const DEFAULT_DISHES = [
     subtitle: "LIGHT & SMOKY",
     description: "Perfectly grilled tuna, served with fresh greens and a smoky dressing.",
     themeColor: "#2a9d8f",
-    sequencePath: "/avocado-salmon-frame/frame_",
-    frameCount: 88
+    sequencePath: "/avocado-salmon-frame/ezgif-frame-",
+    frameCount: 79,
+    startIndex: 74,
+    extension: 'png'
   },
   {
     id: 'mediterranean-salad',
@@ -38,8 +42,10 @@ const DEFAULT_DISHES = [
     subtitle: "FRESH & ZESTY",
     description: "A refreshing salad of mixed greens, tomatoes, olives, and feta cheese with a zesty vinaigrette.",
     themeColor: "#e9c46a",
-    sequencePath: "/avocado-salmon-frame/frame_",
-    frameCount: 88
+    sequencePath: "/avocado-salmon-frame/ezgif-frame-",
+    frameCount: 79,
+    startIndex: 74,
+    extension: 'png'
   }
 ];
 
@@ -79,12 +85,11 @@ const DEFAULT_MENU = [
 ];
 
 const DEFAULT_CONFIG = {
-  heroTitle: "Ready for an unforgettable meal?",
-  heroDescription: "Join us at Cafe Da Vina for a modern fusion experience.",
-  address: "123 Gourmet St, Food City",
-  phone: "+1 234 567 890",
-  email: "hello@cafedavina.com",
-  isOpen: true
+  welcome: "Where Every Meal Feels Like Home",
+  phone: "+61 431 119 221",
+  hours: "Closed · Opens 5.30 am Thu",
+  address: "107 Astor Terrace, Spring Hill QLD 4000",
+  email: "iba@gmail.com"
 };
 
 export default function Home() {
@@ -122,8 +127,8 @@ export default function Home() {
         const menuSnap = await getDocs(collection(db, "menu_items"));
         setMenuItems(menuSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
 
-        // Fetch Site Config
-        const configSnap = await getDoc(doc(db, "configs", "site"));
+        // Fetch Global Settings (Cafe Identity)
+        const configSnap = await getDoc(doc(db, "settings", "global"));
         if (configSnap.exists()) {
           setSiteConfig(configSnap.data());
         }
@@ -185,6 +190,8 @@ export default function Home() {
               key={currentDish?.sequencePath || 'fallback'}
               sequencePath={currentDish?.sequencePath || DEFAULT_DISHES[0].sequencePath}
               frameCount={currentDish?.frameCount || DEFAULT_DISHES[0].frameCount}
+              startIndex={currentDish?.startIndex || DEFAULT_DISHES[0].startIndex || 0}
+              extension={currentDish?.extension || DEFAULT_DISHES[0].extension}
               onProgress={handleLoadingProgress}
               containerRef={heroContainerRef}
             />
@@ -382,15 +389,15 @@ export default function Home() {
         {/* Final CTA */}
         <section id="contact" className={styles.ctaSection}>
           <div className="container text-center">
-            <h2>{siteConfig.heroTitle}</h2>
-            <p>{siteConfig.heroDescription}</p>
+            <h2>{siteConfig.welcome}</h2>
+            <p>Join us at Cafe Da Vina for a modern fusion experience.</p>
             <div className={styles.ctaButtons}>
               <Link href="/booking" className="btn btn-primary">Book a Table Now</Link>
-              <a href={`tel:${siteConfig.phone}`} className="btn btn-outline">Call Us</a>
+              <a href={`tel:${siteConfig.phone}`} className="btn btn-outline">Call Us: {siteConfig.phone}</a>
             </div>
-            <div className={`${styles.storeStatus} ${siteConfig.isOpen ? styles.open : styles.closed}`}>
+            <div className={`${styles.storeStatus}`}>
               <Clock size={20} />
-              <span>We are currently {siteConfig.isOpen ? 'OPEN' : 'CLOSED'}</span>
+              <span>{siteConfig.hours}</span>
             </div>
           </div>
         </section>

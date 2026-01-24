@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Instagram, Facebook, Twitter, MapPin, Phone, Mail } from 'lucide-react';
+import { Instagram, Facebook, Twitter, MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import styles from './Footer.module.css';
@@ -10,14 +10,14 @@ export default function Footer() {
     const [config, setConfig] = useState({
         address: '107 Astor Terrace, Spring Hill QLD 4000',
         phone: '+61 431 119 221',
-        email: 'hello@cafedavina.com',
-        isOpen: true
+        email: 'iba@gmail.com',
+        hours: 'Closed · Opens 5.30 am Thu'
     });
 
     useEffect(() => {
         const fetchConfig = async () => {
             try {
-                const docRef = doc(db, "configs", "site");
+                const docRef = doc(db, "settings", "global");
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     setConfig(docSnap.data());
@@ -62,8 +62,8 @@ export default function Footer() {
                             <li><Phone size={18} /> {config.phone}</li>
                             <li><Mail size={18} /> {config.email}</li>
                             <li className={styles.statusBadge}>
-                                <span className={config.isOpen ? styles.dotOpen : styles.dotClosed}></span>
-                                <strong>{config.isOpen ? 'Open Now' : 'Closed'}</strong>
+                                <Clock size={18} style={{ marginRight: '8px' }} />
+                                <strong>{config.hours}</strong>
                             </li>
                         </ul>
                     </div>
