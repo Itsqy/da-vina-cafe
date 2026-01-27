@@ -83,28 +83,18 @@ export default function BookingPage() {
                 createdAt: Timestamp.now()
             });
 
-            // 4. Send "Request Received / Pending" email via 'mail' collection
-            await addDoc(collection(db, 'mail'), {
-                to: email,
-                message: {
-                    subject: `Reservation Request Received: ${generatedBookingId}`,
-                    text: `Hi ${name || 'Guest'}, we have received your reservation request for ${format(selectedDate, 'PPP')} at ${selectedTime}. Please wait for a confirmation email once our team has reviewed it.`,
-                    html: `
-            <div style="font-family: sans-serif; padding: 20px; color: #333;">
-              <h1 style="color: #8b5e3c;">Cafe Da Vina</h1>
-              <p>Hi <strong>${name || 'Guest'}</strong>,</p>
-              <p>Thank you for your reservation request! Our team is currently reviewing it, and we will send you a <strong>confirmation email</strong> once it is approved.</p>
-              <div style="background: #fdf6e3; border: 1px solid #eee; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                <p><strong>Status:</strong> <span style="color: #d4a017; font-weight: bold;">PENDING APPROVAL</span></p>
-                <p><strong>Ref:</strong> ${generatedBookingId}</p>
-                <p><strong>Date:</strong> ${format(selectedDate, 'PPP')}</p>
-                <p><strong>Time:</strong> ${selectedTime}</p>
-                <p><strong>Guests:</strong> ${numPeople}</p>
-              </div>
-              <p style="font-size: 14px; color: #666;">Note: This is not a final confirmation. You will receive another email once your table is officially booked.</p>
-            </div>
-          `,
-                }
+            // 4. Send "Request Received" emails via API (Admin & Customer)
+            await fetch('/api/notify-admin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    bookingId: generatedBookingId,
+                    name,
+                    date: format(selectedDate, 'yyyy-MM-dd'),
+                    time: selectedTime,
+                    guests: numPeople,
+                    email: email
+                })
             });
 
             // Set cooldown in localStorage

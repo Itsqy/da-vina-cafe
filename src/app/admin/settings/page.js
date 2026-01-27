@@ -8,6 +8,7 @@ import {
     Settings, Check, AlertCircle, Save as SaveIcon, ArrowLeft, Info, Globe, ShieldCheck, Mail, Phone, MapPin, Clock, Image as ImageIcon
 } from 'lucide-react';
 import AdminSidebar from '@/components/AdminSidebar';
+import ImageUpload from '@/components/ImageUpload';
 import styles from '../Admin.module.css';
 
 export default function GlobeSettingsPage() {
@@ -20,9 +21,11 @@ export default function GlobeSettingsPage() {
         welcome: 'A Warm Welcome in Every Cup',
         address: 'Jl. Kopi Harapan No. 12, Jakarta',
         email: 'halo@cafedavina.com',
-        customerServiceEmail: 'iba@gmail.com',
+        customerServiceEmail: 'rifqisyatria@gmail.com',
         heroImage: 'https://storage.googleapis.com/banani-generated-images/generated-images/de63915b-8f34-47fe-bddd-6e1f90159747.jpg',
-        heroSubtitle: 'Experience the coziest corner in town. Hand-crafted coffee, fresh pastries, and a space designed for connection.'
+        heroSubtitle: 'Experience the coziest corner in town. Hand-crafted coffee, fresh pastries, and a space designed for connection.',
+        storyImage: 'https://storage.googleapis.com/banani-generated-images/generated-images/a604cbb0-d28f-4f46-ba64-3d4df5bce336.jpg',
+        experienceImage: 'https://storage.googleapis.com/banani-generated-images/generated-images/aa22fa01-567b-402e-ad9e-cde85b3da042.jpg'
     });
     const [feedback, setFeedback] = useState({ show: false, type: '', title: '', message: '' });
 
@@ -193,14 +196,11 @@ export default function GlobeSettingsPage() {
                             />
                         </div>
 
-                        <div className={styles.inputGroup} style={{ padding: '0 24px 16px' }}>
-                            <label className={styles.pillInputLabel}><ImageIcon size={12} style={{ marginRight: '4px' }} /> Hero Background Image Link </label>
-                            <input
-                                className={styles.pillInput}
-                                value={settings.heroImage || ''}
-                                onChange={(e) => setSettings({ ...settings, heroImage: e.target.value })}
-                                required
-                                placeholder="Paste image URL here..."
+                        <div style={{ padding: '0 24px 16px' }}>
+                            <ImageUpload
+                                label="Hero Background Image"
+                                value={settings.heroImage}
+                                onChange={(url) => setSettings({ ...settings, heroImage: url })}
                             />
                         </div>
 
@@ -212,6 +212,19 @@ export default function GlobeSettingsPage() {
                                 value={settings.heroSubtitle || ''}
                                 onChange={(e) => setSettings({ ...settings, heroSubtitle: e.target.value })}
                                 required
+                            />
+                        </div>
+
+                        <div className={styles.fieldGrid2} style={{ padding: '0 24px 24px' }}>
+                            <ImageUpload
+                                label="Story Section Image"
+                                value={settings.storyImage}
+                                onChange={(url) => setSettings({ ...settings, storyImage: url })}
+                            />
+                            <ImageUpload
+                                label="Experience Section Image"
+                                value={settings.experienceImage}
+                                onChange={(url) => setSettings({ ...settings, experienceImage: url })}
                             />
                         </div>
 

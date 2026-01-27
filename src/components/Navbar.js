@@ -7,8 +7,8 @@ import styles from './Navbar.module.css';
 const NAV_LINKS = [
     { label: 'Home', href: '/' },
     { label: 'Menu', href: '#menu' },
-    { label: 'Story', href: '/about' },
     { label: 'Gallery', href: '/gallery' },
+    { label: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar({ theme = 'light' }) {

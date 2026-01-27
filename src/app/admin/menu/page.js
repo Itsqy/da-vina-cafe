@@ -8,6 +8,7 @@ import {
     Plus, Search, Edit2, Trash2, Check, X, AlertCircle, Save as SaveIcon, Utensils, ArrowLeft
 } from 'lucide-react';
 import AdminSidebar from '@/components/AdminSidebar';
+import ImageUpload from '@/components/ImageUpload';
 import styles from '../Admin.module.css';
 
 export default function MenuManagementPage() {
@@ -330,16 +331,11 @@ export default function MenuManagementPage() {
                                 />
                             </div>
 
-                            <div className={styles.inputGroup}>
-                                <label className={styles.pillInputLabel}>Image Path</label>
-                                <input
-                                    className={styles.pillInput}
-                                    value={formData.image || ''}
-                                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                    required
-                                    placeholder="e.g. /egg-on-salmon.webp"
-                                />
-                            </div>
+                            <ImageUpload
+                                label="Dish Image"
+                                value={formData.image}
+                                onChange={(url) => setFormData({ ...formData, image: url })}
+                            />
 
                             <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
                                 <button type="button" className={styles.btnOutline} style={{ flex: 1 }} onClick={() => setShowModal(false)}>

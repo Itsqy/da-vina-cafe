@@ -76,7 +76,8 @@ export default function BookingsManagementPage() {
                     date: booking.date,
                     time: booking.time,
                     guests: booking.guests,
-                    name: booking.name || 'Customer'
+                    name: booking.name || 'Customer',
+                    bookingId: booking.bookingId
                 })
             });
 

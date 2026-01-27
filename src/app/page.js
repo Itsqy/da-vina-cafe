@@ -50,12 +50,17 @@ const DEFAULT_CONFIG = {
   phone: "+62 812 3456 7890",
   hours: "Mon–Fri 08:00–22:00",
   address: "Jl. Kopi Harapan No. 12, Jakarta",
-  email: "halo@cafedavina.com"
+  email: "halo@cafedavina.com",
+  heroImage: "https://storage.googleapis.com/banani-generated-images/generated-images/de63915b-8f34-47fe-bddd-6e1f90159747.jpg",
+  heroSubtitle: "Experience the coziest corner in town. Hand-crafted coffee, fresh pastries, and a space designed for connection.",
+  storyImage: "https://storage.googleapis.com/banani-generated-images/generated-images/a604cbb0-d28f-4f46-ba64-3d4df5bce336.jpg",
+  experienceImage: "https://storage.googleapis.com/banani-generated-images/generated-images/aa22fa01-567b-402e-ad9e-cde85b3da042.jpg"
 };
 
 export default function Home() {
   const [menuItems, setMenuItems] = useState(DEFAULT_MENU);
   const [siteConfig, setSiteConfig] = useState(DEFAULT_CONFIG);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,10 +76,28 @@ export default function Home() {
         }
       } catch (err) {
         console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.loadingScreen}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className={styles.loadingLogo}
+        >
+          <div className={styles.loaderPulse}></div>
+          <Coffee size={48} className={styles.loaderIcon} />
+        </motion.div>
+        <p className={styles.loadingText}>Brewing Experience...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -134,7 +157,7 @@ export default function Home() {
                 viewport={{ once: true }}
               >
                 <img
-                  src="https://storage.googleapis.com/banani-generated-images/generated-images/a604cbb0-d28f-4f46-ba64-3d4df5bce336.jpg"
+                  src={siteConfig.storyImage || "https://storage.googleapis.com/banani-generated-images/generated-images/a604cbb0-d28f-4f46-ba64-3d4df5bce336.jpg"}
                   className={styles.storyImg}
                   alt="Friends at Cafe Davina"
                 />
@@ -214,7 +237,7 @@ export default function Home() {
                 style={{ direction: 'ltr' }}
               >
                 <img
-                  src="https://storage.googleapis.com/banani-generated-images/generated-images/aa22fa01-567b-402e-ad9e-cde85b3da042.jpg"
+                  src={siteConfig.experienceImage || "https://storage.googleapis.com/banani-generated-images/generated-images/aa22fa01-567b-402e-ad9e-cde85b3da042.jpg"}
                   className={styles.storyImg}
                   alt="Workspace at Davina"
                 />
@@ -253,10 +276,15 @@ export default function Home() {
                 </div>
               </div>
               <div className={styles.visitMap}>
-                <div className={styles.mapPlaceholder}>
-                  <MapPin size={48} />
-                  <span>Interactive Map Placeholder</span>
-                </div>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3540.2335447600887!2d153.02535031505304!3d-27.46194798332159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b915a034909a349%3A0xe5a363a0a3826038!2s107%20Astor%20Terrace%2C%20Spring%20Hill%20QLD%204000%2C%20Australia!5e0!3m2!1sen!2sid!4v1643257000000!5m2!1sen!2sid"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
               </div>
             </div>
           </div>
