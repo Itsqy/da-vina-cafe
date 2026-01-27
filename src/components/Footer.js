@@ -1,76 +1,43 @@
 "use client";
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Instagram, Facebook, Twitter, MapPin, Phone, Mail, Clock } from 'lucide-react';
-import { db } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { Instagram, Facebook, Twitter } from 'lucide-react';
 import styles from './Footer.module.css';
 
 export default function Footer() {
-    const [config, setConfig] = useState({
-        address: '107 Astor Terrace, Spring Hill QLD 4000',
-        phone: '+61 431 119 221',
-        email: 'iba@gmail.com',
-        hours: 'Closed · Opens 5.30 am Thu'
-    });
-
-    useEffect(() => {
-        const fetchConfig = async () => {
-            try {
-                const docRef = doc(db, "settings", "global");
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    setConfig(docSnap.data());
-                }
-            } catch (err) {
-                console.error("Error fetching footer config:", err);
-            }
-        };
-        fetchConfig();
-    }, []);
-
     return (
         <footer className={styles.footer}>
-            <div className={`${styles.container} container`}>
-                <div className={styles.grid}>
-                    <div className={styles.info}>
-                        <h3 className={styles.logo}>Cafe Da-Vina</h3>
-                        <p className={styles.description}>
-                            Modern Fusion Café serving comforting and tasty food in a cozy and inviting environment.
-                        </p>
-                        <div className={styles.socials}>
-                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
-                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
-                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><Twitter size={20} /></a>
+            <div className="container">
+                <div className={styles.footerGrid}>
+                    <div className={styles.footerBrand}>
+                        <h4>Cafe Davina</h4>
+                        <p>Your neighborhood sanctuary for great coffee, fresh food, and warm company.</p>
+                        <div className={styles.socialLinks}>
+                            <a href="#"><Instagram size={24} /></a>
+                            <a href="#"><Facebook size={24} /></a>
+                            <a href="#"><Twitter size={24} /></a>
                         </div>
                     </div>
-
-                    <div className={styles.links}>
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><Link href="/">Home</Link></li>
-                            <li><Link href="/menu">Menu</Link></li>
-                            <li><Link href="/gallery">Gallery</Link></li>
-                            <li><Link href="/booking">Reservations</Link></li>
-                        </ul>
+                    <div className={styles.footerCol}>
+                        <h5>Discover</h5>
+                        <Link href="/" className={styles.footerLink}>Home</Link>
+                        <Link href="#menu" className={styles.footerLink}>Full Menu</Link>
+                        <Link href="/about" className={styles.footerLink}>Our Story</Link>
+                        <Link href="/careers" className={styles.footerLink}>Careers</Link>
                     </div>
-
-                    <div className={styles.contact}>
-                        <h4>Contact Us</h4>
-                        <ul>
-                            <li><MapPin size={18} /> {config.address}</li>
-                            <li><Phone size={18} /> {config.phone}</li>
-                            <li><Mail size={18} /> {config.email}</li>
-                            <li className={styles.statusBadge}>
-                                <Clock size={18} style={{ marginRight: '8px' }} />
-                                <strong>{config.hours}</strong>
-                            </li>
-                        </ul>
+                    <div className={styles.footerCol}>
+                        <h5>Visit</h5>
+                        <div className={styles.footerLink}>Jl. Kopi Harapan No. 12</div>
+                        <div className={styles.footerLink}>Jakarta, ID 10220</div>
+                        <Link href="#" className={styles.footerLink}>Get Directions</Link>
+                    </div>
+                    <div className={styles.footerCol}>
+                        <h5>Hours</h5>
+                        <div className={styles.footerLink}>Mon-Fri: 7am - 9pm</div>
+                        <div className={styles.footerLink}>Sat-Sun: 8am - 10pm</div>
                     </div>
                 </div>
-
-                <div className={styles.bottom}>
-                    <p>&copy; 2026 Cafe Da-Vina. All rights reserved.</p>
+                <div className={styles.footerBottom}>
+                    © 2026 Cafe Davina. All rights reserved.
                 </div>
             </div>
         </footer>

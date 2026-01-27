@@ -1,939 +1,293 @@
-/* Page Wrapper */
 .page {
-    background-color: var(--bg-primary);
-    color: var(--text-main);
-    transition: background-color 0.5s ease;
+    min-height: 100vh;
 }
 
-/* Scroll Wrapper - defines how long the animation lasts */
-.heroScrollWrapper {
-    height: 250vh;
-    /* Adjust for speed */
-    position: relative;
-    z-index: 10;
-}
-
-@media (max-width: 991px) {
-    .heroScrollWrapper {
-        height: 180vh;
-        /* Faster scroll on mobile */
-    }
-}
-
-/* Hero Section - Sticky Pinning */
+/* Hero Section */
 .hero {
-    position: sticky;
+    position: relative;
+    height: 700px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    color: white;
+}
+
+.heroBg {
+    position: absolute;
     top: 0;
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    padding: 0;
-    z-index: 10;
-}
-
-.heroGrid {
-    position: relative;
-    z-index: 20;
-    display: grid;
-    grid-template-columns: 1fr 1fr 200px;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-
-.heroLeft {
-    padding-right: 4rem;
-}
-
-.dishName {
-    font-size: 5rem;
-    line-height: 0.9;
-    font-weight: 800;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-    letter-spacing: -2px;
-    color: var(--accent-color);
-    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.dishSubtitle {
-    display: block;
-    font-size: 1.25rem;
-    font-weight: 300;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    color: #fff;
-    opacity: 0.8;
-}
-
-.dishDescription {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #fff;
-    margin-bottom: 3rem;
-    max-width: 400px;
-    opacity: 0.9;
-}
-
-.heroActions {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.heroCenter {
-    flex: 1;
-}
-
-/* Right Side Navigation */
-.heroRight {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    height: 100%;
-    position: relative;
-}
-
-.dishIndex {
-    font-family: var(--font-heading);
-    font-size: 8rem;
-    font-weight: 700;
-    line-height: 1;
-    color: rgba(255, 255, 255, 0.6);
-    /* Increased from 0.4 to 0.6 */
-    margin-bottom: 2rem;
-    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-}
-
-.variantNav {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 2rem 0;
-    position: relative;
-}
-
-.navBtn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #fff;
-    opacity: 0.9;
-    /* Increased from 0.6 */
-    transition: var(--transition);
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.05);
-    /* Added subtle background */
-    padding: 1rem;
-    border-radius: 12px;
-    backdrop-filter: blur(5px);
-    width: 60px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.navBtn:hover {
-    opacity: 1;
-    transform: translateY(-5px);
-    border-color: var(--accent-color);
-    background: rgba(var(--accent-color), 0.1);
-}
-
-.navLabel {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    margin-bottom: 0.5rem;
-}
-
-.navDivider {
-    width: 1px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.miniLoader {
-    position: absolute;
-    bottom: -40px;
-    right: 0;
-}
-
-.spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-top-color: var(--accent-color);
-    border-radius: 50%;
-    animation: rotate 1s linear infinite;
-}
-
-@keyframes rotate {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Social Icons */
-.heroSocials {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 2rem;
-    z-index: 20;
-}
-
-.heroSocials a {
-    color: #fff;
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-}
-
-.heroSocials a:hover {
-    opacity: 1;
-}
-
-/* Content Sections */
-.contentSection {
-    position: relative;
-    z-index: 20;
-    /* Ensure content is above the sticky background */
-    padding: 10rem 0;
-    background-color: var(--bg-primary);
-}
-
-.altBg {
-    background-color: var(--bg-secondary);
-}
-
-.sectionHeading {
-    text-align: center;
-    margin-bottom: 5rem;
-}
-
-.sectionHeading span {
-    display: block;
-    font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--accent-color);
-    margin-bottom: 1rem;
-}
-
-.sectionHeading h2 {
-    font-size: 3.5rem;
-    font-weight: 700;
-}
-
-/* Menu Grid */
-.menuGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: center;
-}
-
-.menuContent h3 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.featureList {
-    margin-top: 2.5rem;
-}
-
-.featureList li {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.2rem;
-    font-weight: 500;
-    color: var(--text-main);
-}
-
-.menuImage img {
-    border-radius: 40px;
-    box-shadow: var(--shadow);
-}
-
-/* Featured Menu Grid */
-.featuredMenuGrid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    margin-top: 3rem;
-}
-
-.menuFeatureCard {
-    background: var(--bg-secondary);
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: transform 0.3s ease;
-}
-
-.menuFeatureCard:hover {
-    transform: translateY(-10px);
-}
-
-.menuFeatureImage {
-    height: 200px;
-    overflow: hidden;
-}
-
-.menuFeatureImage img {
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    z-index: 0;
 }
 
-.menuFeatureCard:hover .menuFeatureImage img {
-    transform: scale(1.1);
+.heroOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
 }
 
-.menuFeatureContent {
-    padding: 1.5rem;
-}
-
-.menuFeatureContent h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: var(--accent-color);
-}
-
-.menuFeatureContent p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.menuFeaturePrice {
-    font-weight: 700;
-    color: var(--text-main);
-    font-size: 1.1rem;
-}
-
-.detailLink {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--accent-color);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: var(--transition);
-}
-
-.detailLink:hover {
-    gap: 0.75rem;
-    opacity: 0.8;
-}
-
-/* Ingredients Grid */
-.ingredientsGrid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-}
-
-.ingredientCard {
-    background: var(--bg-primary);
-    padding: 3rem 2rem;
-    border-radius: 24px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.ingredientCard:hover {
-    transform: translateY(-10px);
-}
-
-.ingredientIcon {
-    width: 60px;
-    height: 60px;
-    background: rgba(var(--accent-color), 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    color: var(--accent-color);
-}
-
-/* Nutrition Layout */
-.nutritionLayout {
-    display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 6rem;
-    align-items: center;
-}
-
-.nutritionLabel {
-    background: var(--white);
-    color: #000;
-    padding: 2rem;
-    border: 1px solid #000;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-.nutritionLabel h3 {
-    font-family: sans-serif;
-    font-size: 2rem;
-    border-bottom: 10px solid #000;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.labelDivider {
-    height: 5px;
-    background: #000;
-    margin-bottom: 0.5rem;
-}
-
-.labelItem {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #000;
-    padding: 0.3rem 0;
-    font-weight: bold;
-}
-
-.nutritionIntro h2 {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-}
-
-.nutritionIntro p {
-    font-size: 1.2rem;
-    margin-bottom: 2.5rem;
-    color: var(--text-muted);
-}
-
-/* Reviews */
-.reviewsGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
-}
-
-.reviewCard {
-    background: var(--bg-primary);
-    padding: 3rem;
-    border-radius: 30px;
+.heroContent {
     position: relative;
-    box-shadow: var(--shadow);
+    z-index: 2;
+    max-width: 700px;
 }
 
-.reviewIcon {
-    color: var(--accent-color);
-    margin-bottom: 2rem;
+.heroTitle {
+    font-size: 64px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    line-height: 1.1;
+    letter-spacing: -2px;
 }
 
-.reviewer {
-    margin-top: 2rem;
+.heroSubtitle {
+    font-size: 20px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* Sections */
+.sectionHeader {
+    text-align: center;
+    margin-bottom: 64px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sectionTitle {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.sectionDesc {
+    font-size: 18px;
+    color: var(--muted-foreground);
+    line-height: 1.6;
+}
+
+.textContent h3 {
+    font-size: 32px;
+    margin-bottom: 24px;
+    color: var(--foreground);
+}
+
+.textContent p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted-foreground);
+    margin-bottom: 24px;
+}
+
+.storyImg {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Menu Cards */
+.menuCard {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.menuCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.menuImg {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.menuContent {
+    padding: 24px;
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.reviewer strong {
-    font-size: 1.1rem;
-}
-
-.reviewer span {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-
-/* FAQ */
-.faqList {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.faqItem {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 2rem 0;
-}
-
-.faqHeader {
+.menuHeader {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
+    align-items: flex-start;
+    margin-bottom: 12px;
 }
 
-.faqAnswer {
-    margin-top: 1rem;
-    color: var(--text-muted);
-}
-
-/* CTA Section */
-.ctaSection {
-    background-color: var(--accent-color);
-    color: var(--white);
-    text-align: center;
-    padding: 10rem 0;
-}
-
-.ctaSection h2 {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-}
-
-.ctaSection p {
-    font-size: 1.5rem;
-    margin-bottom: 3rem;
-    opacity: 0.9;
-}
-
-.storeStatus {
-    margin-top: 3rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 50px;
+.menuTitle {
+    font-size: 18px;
     font-weight: 600;
-    background: rgba(0, 0, 0, 0.1);
+    color: var(--card-foreground);
 }
 
-.storeStatus.open {
-    color: #fff;
+.menuPrice {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary);
 }
 
-.storeStatus.closed {
-    background: rgba(0, 0, 0, 0.2);
-    opacity: 0.7;
+.menuDesc {
+    font-size: 14px;
+    color: var(--muted-foreground);
+    line-height: 1.5;
+    margin-bottom: 24px;
 }
 
-.ctaButtons {
+.btnText {
+    margin-top: auto;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
     display: flex;
-    gap: 2rem;
+    align-items: center;
+    gap: 4px;
+    font-size: 15px;
+}
+
+/* Experience Features */
+.featuresList {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+}
+
+.featureItem {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.featureIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background-color: var(--secondary);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
-/* Footer */
-.footer {
-    padding: 6rem 0 3rem;
-    background: var(--bg-secondary);
-}
-
-.footerGrid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 5rem;
-    margin-bottom: 4rem;
-}
-
-.footerBrand h3 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-
-.footerSocials {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
-.footerSocials a {
-    color: var(--text-main);
-    transition: color 0.3s;
-}
-
-.footerSocials a:hover {
-    color: var(--accent-color);
-}
-
-.footerLinks h4,
-.footerContact h4 {
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-}
-
-.footerLinks a {
-    display: block;
-    margin-bottom: 1rem;
-    opacity: 0.7;
-}
-
-.footerLinks a:hover {
-    opacity: 1;
-}
-
-.footerContact p {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    opacity: 0.7;
-}
-
-.statusBadge {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    font-size: 0.85rem;
+.featureItem span {
     font-weight: 600;
+    font-size: 15px;
 }
 
-.dotOpen {
-    width: 8px;
-    height: 8px;
-    background: #4caf50;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #4caf50;
-    animation: pulse 2s infinite;
-}
-
-.dotClosed {
-    width: 8px;
-    height: 8px;
-    background: #f44336;
-    border-radius: 50%;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    50% {
-        transform: scale(1.5);
-        opacity: 0.5;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
+/* Footer & Other */
+@media (max-width: 1024px) {
+    .heroTitle {
+        font-size: 48px;
     }
 }
 
-.footerBottom {
-    padding-top: 3rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    opacity: 0.6;
-}
-
-.footerLegal {
-    display: flex;
-    gap: 2rem;
-}
-
-@media (max-width: 1200px) {
-    .heroGrid {
-        grid-template-columns: 400px 1fr 150px;
-    }
-
-    .dishName {
-        font-size: 4rem;
-    }
-}
-
-@media (max-width: 991px) {
-    .contentSection {
-        padding: 4rem 0;
-        /* Further reduced from 5rem */
-    }
-
-    .sectionHeading {
-        margin-bottom: 2.5rem;
-    }
-
+@media (max-width: 640px) {
     .hero {
-        align-items: center;
-        /* Center for better dish visibility */
-        height: 85vh;
-        /* More compact height to fit landscape dish */
-        min-height: 500px;
+        height: 600px;
     }
 
-    /* Add a subtle dark gradient at the bottom for readability on mobile */
-    .hero::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 50%;
-        /* Slightly smaller gradient */
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%);
-        z-index: 15;
-        pointer-events: none;
+    .heroTitle {
+        font-size: 40px;
     }
 
-    .heroGrid {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        /* Push content to bottom */
-        padding: 0 1.25rem 8vh;
-        /* Leave room for social icons and lower text */
-        text-align: left;
-        /* Alignment left looks more premium on mobile than center */
-    }
-
-    .heroLeft {
-        padding-right: 0;
-        margin-bottom: 0;
-        order: 2;
-        width: 100%;
-        z-index: 20;
-    }
-
-    .dishName {
-        font-size: 2.5rem;
-        /* More refined size */
-        margin-bottom: 0.2rem;
-        line-height: 1;
-    }
-
-    .dishSubtitle {
-        font-size: 0.8rem;
-        letter-spacing: 3px;
-        margin-bottom: 0.75rem;
-    }
-
-    .dishDescription {
-        font-size: 0.85rem;
-        line-height: 1.6;
-        max-width: 100%;
-        margin-bottom: 1.5rem;
-        opacity: 0.8;
-    }
-
-    .heroActions {
-        justify-content: flex-start;
-        gap: 0.75rem;
-    }
-
-    .heroActions .btn {
-        padding: 0.7rem 1rem;
-        font-size: 0.75rem;
-        flex: 1;
-        /* Equal width buttons on mobile */
-        max-width: 160px;
-        border-radius: 12px;
-    }
-
-    .heroRight {
-        position: absolute;
-        top: 10vh;
-        right: 1.25rem;
-        height: auto;
-        align-items: flex-end;
-        z-index: 30;
-    }
-
-    .dishIndex {
-        font-size: 2.5rem;
-        /* Much smaller, subtle */
-        margin-bottom: 0.5rem;
-        opacity: 0.4;
-        color: rgba(255, 255, 255, 0.4);
-        font-weight: 500;
-    }
-
-    .variantNav {
-        padding: 0;
-        gap: 1rem;
-    }
-
-    .navBtn {
-        padding: 0.5rem;
-        width: 44px;
-        /* More compact */
-        height: 44px;
-        display: flex;
-        justify-content: center;
-        border-radius: 10px;
-        background: rgba(0, 0, 0, 0.3);
-        /* Darker background for contrast */
-        backdrop-filter: blur(10px);
-    }
-
-    .navBtn svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .navLabel {
-        display: none;
-        /* Hide 'PREV/NEXT' labels to save space */
-    }
-
-    .navDivider {
-        display: none;
-        /* Hide divider */
-    }
-
-    .heroSocials {
-        bottom: 20px;
-        left: 1.25rem;
-        transform: none;
-        gap: 1.25rem;
-        justify-content: flex-start;
-        width: auto;
-    }
-
-    .heroSocials svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    /* Other Sections on Mobile */
-    .sectionHeading {
-        margin-bottom: 3rem;
-    }
-
-    .sectionHeading h2 {
-        font-size: 1.8rem;
-        /* Smaller section titles */
-    }
-
-    .footerGrid {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-    }
-
-    .footer {
-        padding: 4rem 0 2rem;
-    }
-
-    .footerBrand h3 {
-        font-size: 1.5rem;
-    }
-
-    .footerLinks h4,
-    .footerContact h4 {
-        margin-bottom: 1rem;
-        font-size: 0.8rem;
-    }
-
-    .footerLinks a,
-    .footerContact p {
-        font-size: 0.85rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .menuFeatureImage {
-        height: 140px;
-        /* Smaller image height */
-    }
-
-    .menuFeatureContent {
-        padding: 1rem;
-        /* More compact padding */
-    }
-
-    .menuFeatureContent h3 {
-        font-size: 1rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .menuFeatureContent p {
-        font-size: 0.8rem;
-        line-height: 1.4;
-        margin-bottom: 0.5rem;
-    }
-
-    .menuFeaturePrice {
-        font-size: 0.95rem;
-    }
-
-    .ingredientCard {
-        padding: 2rem 1.5rem;
-    }
-
-    .ingredientIcon {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 1rem;
-    }
-
-    .reviewCard {
-        padding: 2rem;
-    }
-
-    .nutritionLayout {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .nutritionIntro h2 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-    }
-
-    .nutritionIntro p {
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .nutritionLabel {
-        padding: 1.25rem;
-    }
-
-    .ingredientsGrid,
-    .reviewsGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .featuredMenuGrid {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 columns for a more compact look */
-        gap: 1rem;
-        /* Smaller gap */
+    .featuresList {
+        flex-wrap: wrap;
+        gap: 20px;
     }
 }
 
-@media (max-width: 480px) {
-    .dishName {
-        font-size: 2.1rem;
+/* Visit Section */
+.visitContainer {
+    display: flex;
+    gap: 64px;
+    margin-top: 48px;
+}
+
+.visitInfo {
+    flex: 1;
+}
+
+.visitTitle {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 32px;
+}
+
+.visitList {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.visitItem {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.visitIcon {
+    color: var(--primary);
+    margin-top: 4px;
+}
+
+.visitText h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.visitText p {
+    color: var(--muted-foreground);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.visitMap {
+    flex: 1;
+    background-color: var(--secondary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    height: 400px;
+}
+
+.mapPlaceholder {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: var(--muted-foreground);
+    background-color: #fceee4;
+}
+
+@media (max-width: 1024px) {
+    .visitContainer {
+        flex-direction: column;
+        gap: 40px;
     }
 
-    .dishDescription {
-        max-width: 100%;
-    }
-
-    .heroActions {
-        flex-direction: row;
-        /* Keep them side-by-side unless very small */
-    }
-
-    .heroActions .btn {
-        padding: 0.7rem 1rem;
-        min-width: 0;
-        flex: 1;
-    }
-
-    .ctaSection h2 {
-        font-size: 2.5rem;
-    }
-
-    .ctaSection p {
-        font-size: 1.1rem;
+    .visitMap {
+        height: 300px;
     }
 }

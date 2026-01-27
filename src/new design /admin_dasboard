@@ -1,0 +1,1264 @@
+<div
+  class="export-wrapper"
+  style="
+    width: 1440px;
+    min-height: 812px;
+    position: relative;
+    font-family: var(--font-family-body);
+    background-color: var(--background);
+  "
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=Geist:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=PT+Serif:wght@400;700&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Shantell+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Cafe Davina Admin Dashboard</title>
+
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+        .export-wrapper {
+          margin: 0;
+          padding: 0;
+          font-family: var(--font-family-body);
+          background-color: var(--background);
+          color: var(--foreground);
+          overflow-x: hidden;
+        }
+      </style>
+
+      <style id="layout-styles">
+        .app-shell {
+          display: flex;
+          min-height: 812px;
+          background-color: var(--background);
+        }
+        .sidebar {
+          width: 260px;
+          background-color: var(--sidebar);
+          padding: 24px 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          border-right: 1px solid var(--border);
+        }
+        .sidebar-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .sidebar-logo-mark {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background-color: var(--sidebar-primary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--sidebar-primary-foreground);
+          font-size: 18px;
+          font-weight: 700;
+        }
+        .sidebar-title {
+          display: flex;
+          flex-direction: column;
+        }
+        .sidebar-title-main {
+          font-size: 18px;
+          font-weight: 600;
+          color: var(--sidebar-foreground);
+        }
+        .sidebar-title-sub {
+          font-size: 12px;
+          color: var(--muted-foreground);
+        }
+        .sidebar-nav {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          margin-top: 8px;
+        }
+        .sidebar-section-label {
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: var(--muted-foreground);
+          margin: 12px 0 4px 8px;
+        }
+        .nav-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 8px 10px;
+          border-radius: var(--radius-md);
+          color: var(--sidebar-foreground);
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+        .nav-item-active {
+          background-color: var(--sidebar-primary);
+          color: var(--sidebar-primary-foreground);
+        }
+        .nav-item-icon {
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .sidebar-footer {
+          margin-top: auto;
+          padding-top: 16px;
+          border-top: 1px solid var(--border);
+          font-size: 12px;
+          color: var(--muted-foreground);
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .sidebar-admin {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .sidebar-admin-avatar {
+          width: 28px;
+          height: 28px;
+          border-radius: 999px;
+          overflow: hidden;
+        }
+        .sidebar-admin-info {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .sidebar-admin-name {
+          font-size: 13px;
+          font-weight: 500;
+          color: var(--sidebar-foreground);
+        }
+        .sidebar-admin-email {
+          font-size: 11px;
+          color: var(--muted-foreground);
+        }
+        .sidebar-actions {
+          display: flex;
+          gap: 8px;
+          margin-top: 4px;
+        }
+        .sidebar-tag {
+          padding: 2px 8px;
+          border-radius: var(--radius-xl);
+          background-color: var(--muted);
+          color: var(--muted-foreground);
+          font-size: 10px;
+          white-space: nowrap;
+        }
+
+        .main-area {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          padding: 20px 32px;
+          gap: 16px;
+        }
+        .topbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+        }
+        .topbar-left {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .topbar-title {
+          font-size: 22px;
+          font-weight: 600;
+        }
+        .topbar-subtitle {
+          font-size: 13px;
+          color: var(--muted-foreground);
+        }
+        .topbar-right {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .btn-outline {
+          border: 1px solid var(--border);
+          background-color: var(--card);
+          color: var(--foreground);
+          border-radius: var(--radius-md);
+          padding: 8px 14px;
+          font-size: 13px;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+        .btn-primary {
+          background-color: var(--primary);
+          color: var(--primary-foreground);
+          border-radius: var(--radius-md);
+          padding: 9px 18px;
+          font-size: 13px;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+
+        .content-grid {
+          display: grid;
+          grid-template-columns: 2fr 1.4fr;
+          gap: 16px;
+          align-items: flex-start;
+        }
+        .column {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+      </style>
+
+      <style id="card-styles">
+        .card {
+          background-color: var(--card);
+          border-radius: var(--radius-lg);
+          border: 1px solid var(--border);
+          padding: 16px 16px 14px 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 4px;
+        }
+        .card-title-group {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .card-title {
+          font-size: 15px;
+          font-weight: 600;
+        }
+        .card-subtitle {
+          font-size: 12px;
+          color: var(--muted-foreground);
+        }
+        .card-actions {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+        .badge {
+          padding: 2px 8px;
+          border-radius: var(--radius-xl);
+          font-size: 11px;
+          white-space: nowrap;
+        }
+        .badge-success {
+          background-color: var(--success);
+          color: var(--success-foreground);
+        }
+        .badge-warning {
+          background-color: var(--warning);
+          color: var(--warning-foreground);
+        }
+        .badge-muted {
+          background-color: var(--muted);
+          color: var(--muted-foreground);
+        }
+
+        .table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+        }
+        .table th,
+        .table td {
+          padding: 8px 4px;
+          text-align: left;
+          border-bottom: 1px solid var(--border);
+        }
+        .table th {
+          font-weight: 600;
+          color: var(--muted-foreground);
+          font-size: 12px;
+          white-space: nowrap;
+        }
+        .table td {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 160px;
+        }
+        .status-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 2px 10px;
+          border-radius: var(--radius-xl);
+          font-size: 11px;
+          font-weight: 500;
+        }
+        .status-pending {
+          background-color: var(--warning);
+          color: var(--warning-foreground);
+        }
+        .status-confirmed {
+          background-color: var(--success);
+          color: var(--success-foreground);
+        }
+        .status-failed {
+          background-color: var(--destructive);
+          color: var(--destructive-foreground);
+        }
+
+        .tag-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          font-size: 11px;
+        }
+
+        .pill-input {
+          background-color: var(--input);
+          border-radius: var(--radius-md);
+          padding: 8px 10px;
+          font-size: 12px;
+          color: var(--muted-foreground);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+        }
+        .pill-input-label {
+          font-size: 12px;
+          color: var(--muted-foreground);
+          margin-bottom: 4px;
+        }
+
+        .field-grid-2 {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+        .field-grid-3 {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 12px;
+        }
+
+        .mini-label {
+          font-size: 11px;
+          color: var(--muted-foreground);
+          margin-bottom: 4px;
+        }
+
+        .chip-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          font-size: 11px;
+        }
+        .chip {
+          padding: 4px 8px;
+          border-radius: var(--radius-xl);
+          background-color: var(--muted);
+          color: var(--muted-foreground);
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          white-space: nowrap;
+        }
+
+        .log-list {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          font-size: 12px;
+          max-height: 210px;
+          overflow: hidden;
+        }
+        .log-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        .log-main {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .log-action {
+          font-weight: 500;
+          font-size: 12px;
+        }
+        .log-meta {
+          font-size: 11px;
+          color: var(--muted-foreground);
+        }
+      </style>
+
+      <style id="modal-and-state-styles">
+        .state-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+          font-size: 12px;
+        }
+        .state-left {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: var(--muted-foreground);
+        }
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: var(--success);
+        }
+        .dot-warning {
+          background-color: var(--warning);
+        }
+
+        .toast-preview {
+          border-radius: var(--radius-md);
+          background-color: var(--foreground);
+          color: var(--background);
+          padding: 10px 12px;
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+        }
+        .toast-text {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .toast-title {
+          font-weight: 600;
+        }
+        .toast-body {
+          opacity: 0.8;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="app-shell">
+        <aside class="sidebar">
+          <div class="sidebar-header" data-media-type="banani-button">
+            <div class="sidebar-logo-mark">D</div>
+            <div class="sidebar-title">
+              <div class="sidebar-title-main">Cafe Davina</div>
+              <div class="sidebar-title-sub">Admin Console</div>
+            </div>
+          </div>
+
+          <div class="sidebar-nav">
+            <div class="sidebar-section-label">Overview</div>
+            <div
+              class="nav-item nav-item-active"
+              data-media-type="banani-button"
+            >
+              <div class="nav-item-icon">
+                <iconify-icon
+                  icon="lucide:layout-dashboard"
+                  style="font-size: 18px; color: currentColor"
+                ></iconify-icon>
+              </div>
+              Dashboard
+            </div>
+            <div class="nav-item" data-media-type="banani-button">
+              <div class="nav-item-icon">
+                <iconify-icon
+                  icon="lucide:lock"
+                  style="font-size: 18px; color: currentColor"
+                ></iconify-icon>
+              </div>
+              Authentication
+            </div>
+          </div>
+
+          <div class="sidebar-nav">
+            <div class="sidebar-section-label">Operations</div>
+            <div class="nav-item" data-media-type="banani-button">
+              <div class="nav-item-icon">
+                <iconify-icon
+                  icon="lucide:calendar-clock"
+                  style="font-size: 18px; color: currentColor"
+                ></iconify-icon>
+              </div>
+              Booking Management
+            </div>
+            <div class="nav-item" data-media-type="banani-button">
+              <div class="nav-item-icon">
+                <iconify-icon
+                  icon="lucide:panels-top-left"
+                  style="font-size: 18px; color: currentColor"
+                ></iconify-icon>
+              </div>
+              Hero &amp; Parallax Dishes
+            </div>
+            <div class="nav-item" data-media-type="banani-button">
+              <div class="nav-item-icon">
+                <iconify-icon
+                  icon="lucide:settings-2"
+                  style="font-size: 18px; color: currentColor"
+                ></iconify-icon>
+              </div>
+              Global Site Settings
+            </div>
+            <div class="nav-item" data-media-type="banani-button">
+              <div class="nav-item-icon">
+                <iconify-icon
+                  icon="lucide:list-checks"
+                  style="font-size: 18px; color: currentColor"
+                ></iconify-icon>
+              </div>
+              Activity Logs
+            </div>
+            <div class="nav-item" data-media-type="banani-button">
+              <div class="nav-item-icon">
+                <iconify-icon
+                  icon="lucide:cup-soda"
+                  style="font-size: 18px; color: currentColor"
+                ></iconify-icon>
+              </div>
+              Menu Management
+            </div>
+          </div>
+
+          <div class="sidebar-footer">
+            <div class="sidebar-admin">
+              <div class="sidebar-admin-avatar">
+                <img
+                  src="https://storage.googleapis.com/banani-avatars/avatar%2Ffemale%2F25-35%2FSoutheast%2520Asian%2F3"
+                  alt="Admin Avatar"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="sidebar-admin-info">
+                <div class="sidebar-admin-name">Admin Davina</div>
+                <div class="sidebar-admin-email">admin@cafedavina.com</div>
+              </div>
+            </div>
+            <div class="sidebar-actions">
+              <div class="sidebar-tag" data-media-type="banani-button">
+                Logout
+              </div>
+              <div class="sidebar-tag">Firebase Auth Active</div>
+            </div>
+          </div>
+        </aside>
+
+        <main class="main-area">
+          <header class="topbar">
+            <div class="topbar-left">
+              <div class="topbar-title">Dashboard Overview</div>
+              <div class="topbar-subtitle">
+                Ringkasan cepat untuk booking, email service, dan konten website
+                Cafe Davina.
+              </div>
+            </div>
+            <div class="topbar-right">
+              <div class="btn-outline" data-media-type="banani-button">
+                <div
+                  style="
+                    width: 16px;
+                    height: 16px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <iconify-icon
+                    icon="lucide:shield-check"
+                    style="font-size: 16px; color: currentColor"
+                  ></iconify-icon>
+                </div>
+                Test Email Service
+              </div>
+              <div class="btn-primary" data-media-type="banani-button">
+                <div
+                  style="
+                    width: 16px;
+                    height: 16px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <iconify-icon
+                    icon="lucide:save"
+                    style="font-size: 16px; color: currentColor"
+                  ></iconify-icon>
+                </div>
+                Save All Changes
+              </div>
+            </div>
+          </header>
+
+          <div class="content-grid">
+            <div class="column">
+              <!-- Booking Management -->
+              <section class="card" id="booking-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <div class="card-title">Booking Management</div>
+                    <div class="card-subtitle">
+                      Kelola reservasi meja, konfirmasi, dan pembatalan.
+                    </div>
+                  </div>
+                  <div class="card-actions">
+                    <div class="badge badge-muted">Real-time Firestore</div>
+                  </div>
+                </div>
+
+                <div class="tag-row" style="margin-bottom: 4px">
+                  <div class="status-pill status-pending">
+                    <div
+                      class="nav-item-icon"
+                      style="width: 14px; height: 14px"
+                    >
+                      <iconify-icon
+                        icon="lucide:clock"
+                        style="font-size: 14px; color: currentColor"
+                      ></iconify-icon>
+                    </div>
+                    3 Pending
+                  </div>
+                  <div class="status-pill status-confirmed">
+                    <div
+                      class="nav-item-icon"
+                      style="width: 14px; height: 14px"
+                    >
+                      <iconify-icon
+                        icon="lucide:check"
+                        style="font-size: 14px; color: currentColor"
+                      ></iconify-icon>
+                    </div>
+                    12 Confirmed
+                  </div>
+                </div>
+
+                <div style="overflow: hidden">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Date &amp; Time</th>
+                        <th>Guests</th>
+                        <th>Status</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Raka Putra</td>
+                        <td>27 Jan, 19:00</td>
+                        <td>2</td>
+                        <td>
+                          <span class="status-pill status-pending"
+                            >Pending</span
+                          >
+                        </td>
+                        <td>raka@example.com</td>
+                        <td>
+                          <div style="display: flex; gap: 6px">
+                            <div
+                              class="badge badge-success"
+                              data-media-type="banani-button"
+                            >
+                              Confirm
+                            </div>
+                            <div
+                              class="badge badge-muted"
+                              data-media-type="banani-button"
+                            >
+                              Cancel
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Nadia Lestari</td>
+                        <td>27 Jan, 20:30</td>
+                        <td>4</td>
+                        <td>
+                          <span class="status-pill status-confirmed"
+                            >Confirmed</span
+                          >
+                        </td>
+                        <td>nadia@example.com</td>
+                        <td>
+                          <div style="display: flex; gap: 6px">
+                            <div
+                              class="badge badge-muted"
+                              data-media-type="banani-button"
+                            >
+                              Cancel
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Team Creative</td>
+                        <td>28 Jan, 10:00</td>
+                        <td>6</td>
+                        <td>
+                          <span class="status-pill status-pending"
+                            >Pending</span
+                          >
+                        </td>
+                        <td>studio@creative.id</td>
+                        <td>
+                          <div style="display: flex; gap: 6px">
+                            <div
+                              class="badge badge-success"
+                              data-media-type="banani-button"
+                            >
+                              Confirm &amp; Email
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <!-- Hero & Parallax Dish Management -->
+              <section class="card" id="hero-parallax-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <div class="card-title">Hero &amp; Parallax Dishes</div>
+                    <div class="card-subtitle">
+                      Atur konten cinematic di halaman utama.
+                    </div>
+                  </div>
+                  <div class="card-actions">
+                    <div class="badge badge-muted">3 Active Dishes</div>
+                  </div>
+                </div>
+
+                <div class="field-grid-3">
+                  <div>
+                    <div class="pill-input-label">Dish Name</div>
+                    <div class="pill-input" data-media-type="banani-button">
+                      Kopi Susu Davina
+                      <div
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                        "
+                      >
+                        <iconify-icon
+                          icon="lucide:chevron-down"
+                          style="
+                            font-size: 14px;
+                            color: var(--muted-foreground);
+                          "
+                        ></iconify-icon>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="pill-input-label">Theme Color</div>
+                    <div class="pill-input" data-media-type="banani-button">
+                      <span
+                        style="display: flex; align-items: center; gap: 6px"
+                      >
+                        <span
+                          style="
+                            width: 14px;
+                            height: 14px;
+                            border-radius: 999px;
+                            background-color: var(--primary);
+                          "
+                        ></span>
+                        Warm Caramel
+                      </span>
+                      <div
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                        "
+                      >
+                        <iconify-icon
+                          icon="lucide:layout-dashboard"
+                          style="
+                            font-size: 14px;
+                            color: var(--muted-foreground);
+                          "
+                        ></iconify-icon>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="pill-input-label">Sequence Frames</div>
+                    <div class="pill-input">48 frames · start index 0</div>
+                  </div>
+                </div>
+
+                <div class="field-grid-2" style="margin-top: 12px">
+                  <div>
+                    <div class="mini-label">Subtitle</div>
+                    <div class="pill-input">
+                      Creamy house-blend coffee with organic palm sugar.
+                    </div>
+                  </div>
+                  <div>
+                    <div class="mini-label">WebP Path</div>
+                    <div class="pill-input">
+                      /hero/davina-kopisusu/frame-000.webp
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chip-list" style="margin-top: 10px">
+                  <div class="chip">
+                    <div
+                      style="
+                        width: 14px;
+                        height: 14px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <iconify-icon
+                        icon="lucide:play-circle"
+                        style="font-size: 14px; color: currentColor"
+                      ></iconify-icon>
+                    </div>
+                    Preview Sequence
+                  </div>
+                  <div class="chip" data-media-type="banani-button">
+                    Duplicate Variant
+                  </div>
+                  <div class="chip" data-media-type="banani-button">
+                    Add New Dish
+                  </div>
+                </div>
+              </section>
+
+              <!-- Menu Management (Signature Selection) -->
+              <section class="card" id="menu-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <div class="card-title">Signature Selection</div>
+                    <div class="card-subtitle">
+                      Kelola menu unggulan yang tampil di website.
+                    </div>
+                  </div>
+                  <div class="card-actions">
+                    <div
+                      class="btn-outline"
+                      style="padding: 4px 8px; font-size: 11px"
+                      data-media-type="banani-button"
+                    >
+                      <div
+                        style="
+                          width: 12px;
+                          height: 12px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                        "
+                      >
+                        <iconify-icon
+                          icon="lucide:plus"
+                          style="font-size: 12px; color: currentColor"
+                        ></iconify-icon>
+                      </div>
+                      New Item
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table-wrapper" style="overflow: hidden">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Item</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Kopi Susu Davina</td>
+                        <td>Coffee</td>
+                        <td>25K</td>
+                        <td>
+                          <span class="badge badge-success">Featured</span>
+                        </td>
+                        <td>
+                          <div
+                            style="
+                              display: flex;
+                              gap: 6px;
+                              justify-content: flex-end;
+                            "
+                          >
+                            <div
+                              class="badge badge-muted"
+                              data-media-type="banani-button"
+                            >
+                              Edit
+                            </div>
+                            <div
+                              class="badge"
+                              style="
+                                background-color: var(--destructive);
+                                color: var(--destructive-foreground);
+                              "
+                              data-media-type="banani-button"
+                            >
+                              Delete
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Davina's Toast</td>
+                        <td>Food</td>
+                        <td>45K</td>
+                        <td><span class="badge badge-muted">Visible</span></td>
+                        <td>
+                          <div
+                            style="
+                              display: flex;
+                              gap: 6px;
+                              justify-content: flex-end;
+                            "
+                          >
+                            <div
+                              class="badge badge-muted"
+                              data-media-type="banani-button"
+                            >
+                              Edit
+                            </div>
+                            <div
+                              class="badge"
+                              style="
+                                background-color: var(--destructive);
+                                color: var(--destructive-foreground);
+                              "
+                              data-media-type="banani-button"
+                            >
+                              Delete
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Iced Matcha Latte</td>
+                        <td>Non Coffee</td>
+                        <td>32K</td>
+                        <td><span class="badge badge-muted">Visible</span></td>
+                        <td>
+                          <div
+                            style="
+                              display: flex;
+                              gap: 6px;
+                              justify-content: flex-end;
+                            "
+                          >
+                            <div
+                              class="badge badge-muted"
+                              data-media-type="banani-button"
+                            >
+                              Edit
+                            </div>
+                            <div
+                              class="badge"
+                              style="
+                                background-color: var(--destructive);
+                                color: var(--destructive-foreground);
+                              "
+                              data-media-type="banani-button"
+                            >
+                              Delete
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            <div class="column">
+              <!-- Global Site Settings -->
+              <section class="card" id="global-settings-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <div class="card-title">Global Site Settings</div>
+                    <div class="card-subtitle">
+                      Identitas Cafe Davina di website publik.
+                    </div>
+                  </div>
+                  <div class="card-actions">
+                    <div class="badge badge-muted">Auto-sync</div>
+                  </div>
+                </div>
+
+                <div class="field-grid-2">
+                  <div>
+                    <div class="pill-input-label">Phone Number</div>
+                    <div class="pill-input">+62 812 3456 7890</div>
+                  </div>
+                  <div>
+                    <div class="pill-input-label">Support Email</div>
+                    <div class="pill-input">halo@cafedavina.com</div>
+                  </div>
+                </div>
+
+                <div class="field-grid-2" style="margin-top: 10px">
+                  <div>
+                    <div class="pill-input-label">Business Hours</div>
+                    <div class="pill-input">Mon–Fri 08:00–22:00</div>
+                  </div>
+                  <div>
+                    <div class="pill-input-label">Weekend Hours</div>
+                    <div class="pill-input">Sat–Sun 09:00–23:00</div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 10px">
+                  <div class="pill-input-label">Store Address</div>
+                  <div class="pill-input">Jl. Kopi Harapan No. 12, Jakarta</div>
+                </div>
+
+                <div style="margin-top: 10px">
+                  <div class="pill-input-label">Welcome Message</div>
+                  <div
+                    class="pill-input"
+                    style="height: 60px; align-items: flex-start"
+                  >
+                    Selamat datang di Cafe Davina, rumah kedua Anda untuk kopi
+                    hangat dan obrolan hangat.
+                  </div>
+                </div>
+              </section>
+
+              <!-- Authentication & Access Control -->
+              <section class="card" id="auth-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <div class="card-title">Authentication &amp; Access</div>
+                    <div class="card-subtitle">
+                      Firebase Authentication &amp; route protection.
+                    </div>
+                  </div>
+                  <div class="card-actions">
+                    <div class="badge badge-success">Secure</div>
+                  </div>
+                </div>
+
+                <div class="state-row">
+                  <div class="state-left">
+                    <span class="dot"></span>
+                    <span>Admin routes protected</span>
+                  </div>
+                  <div style="font-size: 11px; color: var(--muted-foreground)">
+                    Session refresh every 60 mins
+                  </div>
+                </div>
+
+                <div class="state-row" style="margin-top: 8px">
+                  <div class="state-left">
+                    <span class="dot dot-warning"></span>
+                    <span>2 active admin sessions</span>
+                  </div>
+                  <div
+                    class="badge badge-muted"
+                    data-media-type="banani-button"
+                  >
+                    Sign out others
+                  </div>
+                </div>
+
+                <div style="margin-top: 12px">
+                  <div class="mini-label">Current Admin</div>
+                  <div class="pill-input">
+                    admin@cafedavina.com
+                    <span
+                      style="font-size: 11px; color: var(--muted-foreground)"
+                      >(you)</span
+                    >
+                  </div>
+                </div>
+
+                <div style="margin-top: 10px">
+                  <div class="mini-label">Login Page URL</div>
+                  <div class="pill-input">/admin/login</div>
+                </div>
+              </section>
+
+              <!-- Activity Logs & Email Dispatch -->
+              <section class="card" id="logs-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <div class="card-title">
+                      Activity Logs &amp; Email Dispatch
+                    </div>
+                    <div class="card-subtitle">
+                      Audit trail NodeMailer &amp; operasi penting.
+                    </div>
+                  </div>
+                  <div class="card-actions">
+                    <div class="badge badge-muted">Last 24 hours</div>
+                  </div>
+                </div>
+
+                <div class="log-list">
+                  <div class="log-item">
+                    <div class="log-main">
+                      <div class="log-action">
+                        Booking confirmed &amp; email sent
+                      </div>
+                      <div class="log-meta">
+                        By admin@cafedavina.com · 27 Jan 18:12 · NodeMailer:
+                        success
+                      </div>
+                    </div>
+                    <span class="status-pill status-confirmed">OK</span>
+                  </div>
+                  <div class="log-item">
+                    <div class="log-main">
+                      <div class="log-action">Test email service</div>
+                      <div class="log-meta">
+                        By admin@cafedavina.com · 27 Jan 10:03 · NodeMailer:
+                        success
+                      </div>
+                    </div>
+                    <span class="status-pill status-confirmed">OK</span>
+                  </div>
+                  <div class="log-item">
+                    <div class="log-main">
+                      <div class="log-action">
+                        Booking confirm failed (SMTP)
+                      </div>
+                      <div class="log-meta">
+                        By admin@cafedavina.com · 26 Jan 21:45 · NodeMailer:
+                        connection timeout
+                      </div>
+                    </div>
+                    <span class="status-pill status-failed">Failed</span>
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    margin-top: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                  "
+                >
+                  <div class="mini-label">Intelligent Modal Preview</div>
+                  <div class="toast-preview">
+                    <div class="toast-text">
+                      <div class="toast-title">Settings saved</div>
+                      <div class="toast-body">
+                        Perubahan Anda berhasil disimpan dan dikirim ke
+                        Firestore.
+                      </div>
+                    </div>
+                    <div
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <iconify-icon
+                        icon="lucide:check-circle"
+                        style="font-size: 16px; color: var(--success)"
+                      ></iconify-icon>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </main>
+      </div>
+    </body>
+  </html>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  <style>
+    :root {
+      --background: #fff7f1;
+      --foreground: #3b2f2f;
+      --border: #00000014;
+      --input: #fff2ea;
+      --primary: #b9653a;
+      --primary-foreground: #ffffff;
+      --secondary: #f4e6dc;
+      --secondary-foreground: #5b4540;
+      --muted: #f0e9e6;
+      --muted-foreground: #8a7a78;
+      --success: #c7efd9;
+      --success-foreground: #195032;
+      --accent: #f2b880;
+      --accent-foreground: #392210;
+      --destructive: #e86b5a;
+      --destructive-foreground: #ffffff;
+      --warning: #ffd8a8;
+      --warning-foreground: #5a3816;
+      --card: #ffffff;
+      --card-foreground: #3b2f2f;
+      --sidebar: #fff3e8;
+      --sidebar-foreground: #4a3834;
+      --sidebar-primary: #b9653a;
+      --sidebar-primary-foreground: #ffffff;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+      --font-family-body: Inter;
+    }
+  </style>
+</div>

@@ -1,133 +1,70 @@
 "use client";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
-  Instagram, Facebook, Twitter, ChevronUp, ChevronDown,
-  Leaf, Info, MessageSquare, HelpCircle, Mail, MapPin, Phone, Clock, ArrowRight
+  Coffee, ArrowRight, ChevronRight, Wifi, Armchair, Sun,
+  Instagram, Facebook, Twitter, MapPin, Clock, Phone
 } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import styles from './Home.module.css';
-import ScrollWebPPlayer from '@/components/ScrollWebPPlayer';
-import LoadingOverlay from '@/components/LoadingOverlay';
-import Navbar from '@/components/Navbar';
-
-const DEFAULT_DISHES = [
-  {
-    id: 'salmon-avocado',
-    name: "Salmon Avocado",
-    subtitle: "FRESH & HEALTHY",
-    description: "A delicious blend of rich salmon and creamy avocado, served with a light citrus dressing.",
-    themeColor: "#8b5e3c",
-    sequencePath: "/avocado-salmon-frame/ezgif-frame-",
-    frameCount: 79,
-    startIndex: 74,
-    extension: 'png'
-  },
-  {
-    id: 'grilled-tuna',
-    name: "Grilled Tuna",
-    subtitle: "LIGHT & SMOKY",
-    description: "Perfectly grilled tuna, served with fresh greens and a smoky dressing.",
-    themeColor: "#2a9d8f",
-    sequencePath: "/avocado-salmon-frame/ezgif-frame-",
-    frameCount: 79,
-    startIndex: 74,
-    extension: 'png'
-  },
-  {
-    id: 'mediterranean-salad',
-    name: "Mediterranean Salad",
-    subtitle: "FRESH & ZESTY",
-    description: "A refreshing salad of mixed greens, tomatoes, olives, and feta cheese with a zesty vinaigrette.",
-    themeColor: "#e9c46a",
-    sequencePath: "/avocado-salmon-frame/ezgif-frame-",
-    frameCount: 79,
-    startIndex: 74,
-    extension: 'png'
-  }
-];
 
 const DEFAULT_MENU = [
   {
     id: 'item-1',
-    name: 'Eggs on Salmon',
-    description: 'Freshly poached eggs served on premium smoked salmon and toasted sourdough bread.',
-    price: '$18.50',
-    image: '/egg-on-salmon.webp',
-    category: 'Breakfast'
+    name: 'Signature Latte',
+    description: 'Rich espresso with perfectly steamed milk and a touch of vanilla bean.',
+    price: '$4.50',
+    image: 'https://storage.googleapis.com/banani-generated-images/generated-images/01b06483-8231-475b-a470-569a2f9ca68b.jpg',
+    category: 'Coffee'
   },
   {
     id: 'item-2',
-    name: 'Avocado Salmon',
-    description: 'Grilled salmon fillet accompanied by creamy avocado slices and a light citrus salad.',
-    price: '$21.00',
-    image: '/avvocado-salmon.webp',
-    category: 'Lunch'
+    name: 'Butter Croissant',
+    description: 'Freshly baked every morning, flaky, golden, and impossibly buttery.',
+    price: '$3.75',
+    image: 'https://storage.googleapis.com/banani-generated-images/generated-images/f7ef4c93-bcdb-47de-8586-bd0389510ac1.jpg',
+    category: 'Bakery'
   },
   {
     id: 'item-3',
-    name: 'Ham and Toast',
-    description: 'Thick slices of honey-glazed ham served with artisan sourdough toast and homemade jam.',
-    price: '$15.50',
-    image: '/toast-and-ham.webp',
-    category: 'Breakfast'
+    name: "Davina's Toast",
+    description: 'Sourdough topped with smashed avocado, poached egg, and chili flakes.',
+    price: '$8.50',
+    image: 'https://storage.googleapis.com/banani-generated-images/generated-images/516bd49b-a595-49eb-b462-f5e0ab2d8c2e.jpg',
+    category: 'Food'
   },
   {
     id: 'item-4',
-    name: 'Smashed Avocado',
-    description: 'Our signature smashed avocado on sourdough, topped with feta, radish, and a hint of chili.',
-    price: '$16.50',
-    image: '/smashed-avocado.jpg',
-    category: 'Breakfast'
+    name: 'Iced Matcha',
+    description: 'Premium ceremonial grade matcha whisked with oat milk and ice.',
+    price: '$5.00',
+    image: 'https://storage.googleapis.com/banani-generated-images/generated-images/fb04e085-47a1-422b-a170-78323520f01c.jpg',
+    category: 'Non Coffee'
   }
 ];
 
 const DEFAULT_CONFIG = {
-  welcome: "Where Every Meal Feels Like Home",
-  phone: "+61 431 119 221",
-  hours: "Closed · Opens 5.30 am Thu",
-  address: "107 Astor Terrace, Spring Hill QLD 4000",
-  email: "iba@gmail.com"
+  welcome: "A Warm Welcome in Every Cup",
+  phone: "+62 812 3456 7890",
+  hours: "Mon–Fri 08:00–22:00",
+  address: "Jl. Kopi Harapan No. 12, Jakarta",
+  email: "halo@cafedavina.com"
 };
 
 export default function Home() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [isSwitching, setIsSwitching] = useState(false);
-
-  // Firestore Data
-  const [dishes, setDishes] = useState(DEFAULT_DISHES);
   const [menuItems, setMenuItems] = useState(DEFAULT_MENU);
   const [siteConfig, setSiteConfig] = useState(DEFAULT_CONFIG);
-
-  const heroContainerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroContainerRef,
-    offset: ["start start", "end end"]
-  });
-
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
-
-  const currentDish = dishes[currentIndex] || DEFAULT_DISHES[0];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch Dishes
-        const dishesSnap = await getDocs(collection(db, "dishes"));
-        if (!dishesSnap.empty) {
-          setDishes(dishesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        const menuSnap = await getDocs(collection(db, "menu_items"));
+        if (!menuSnap.empty) {
+          setMenuItems(menuSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
         }
 
-        // Fetch Menu Items
-        const menuSnap = await getDocs(collection(db, "menu_items"));
-        setMenuItems(menuSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-
-        // Fetch Global Settings (Cafe Identity)
         const configSnap = await getDoc(doc(db, "settings", "global"));
         if (configSnap.exists()) {
           setSiteConfig(configSnap.data());
@@ -139,270 +76,188 @@ export default function Home() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (currentDish) {
-      document.documentElement.style.setProperty('--accent-color', currentDish.themeColor);
-    }
-  }, [currentDish]);
-
-  // Simulate loading for the video (since we don't have individual frame progress anymore)
-  // Handle WebP Loading Progress
-  const handleLoadingProgress = (progress) => {
-    setLoadingProgress(progress);
-    // Optimization: Open the site as soon as the critical frames (35%) are ready.
-    // The rest will load smoothly in the background while the user explores.
-    if (progress >= 35) {
-      setTimeout(() => setIsLoading(false), 500);
-    }
-  };
-
-
-  const handleNext = () => {
-    setIsSwitching(true);
-    setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % dishes.length);
-      setIsSwitching(false);
-    }, 500);
-  };
-
-  const handlePrev = () => {
-    setIsSwitching(true);
-    setTimeout(() => {
-      setCurrentIndex((prev) => (prev - 1 + dishes.length) % dishes.length);
-      setIsSwitching(false);
-    }, 500);
-  };
-
   return (
     <div className={styles.page}>
-      <AnimatePresence>
-        {isLoading && (
-          <LoadingOverlay progress={loadingProgress} visible={isLoading} />
-        )}
-      </AnimatePresence>
-
-      <Navbar />
-
       <main>
-        <div ref={heroContainerRef} className={styles.heroScrollWrapper}>
-          <section className={styles.hero}>
-            <ScrollWebPPlayer
-              key={currentDish?.sequencePath || 'fallback'}
-              sequencePath={currentDish?.sequencePath || DEFAULT_DISHES[0].sequencePath}
-              frameCount={currentDish?.frameCount || DEFAULT_DISHES[0].frameCount}
-              startIndex={currentDish?.startIndex || DEFAULT_DISHES[0].startIndex || 0}
-              extension={currentDish?.extension || DEFAULT_DISHES[0].extension}
-              onProgress={handleLoadingProgress}
-              containerRef={heroContainerRef}
-            />
-
-            <motion.div
-              style={{ opacity: heroOpacity, scale: heroScale }}
-              className={`container ${styles.heroGrid}`}
-            >
-              <div className={styles.heroLeft}>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentDish?.id || 'empty'}
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -50 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                  >
-                    <h1 className={styles.dishName}>{currentDish?.name}</h1>
-                    <span className={styles.dishSubtitle}>{currentDish?.subtitle}</span>
-                    <p className={styles.dishDescription}>{currentDish?.description}</p>
-
-                    <div className={styles.heroActions}>
-                      <Link href="#menu" className="btn btn-outline">See Menu</Link>
-                      <Link href="/booking" className="btn btn-primary">Order Now</Link>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              <div className={styles.heroCenter}></div>
-
-              <div className={styles.heroRight}>
-                <div className={styles.dishIndex}>
-                  0{currentIndex + 1}
-                </div>
-
-                <div className={styles.variantNav}>
-                  <button onClick={handlePrev} className={styles.navBtn}>
-                    <span className={styles.navLabel}>PREV</span>
-                    <ChevronUp size={24} />
-                  </button>
-                  <div className={styles.navDivider}></div>
-                  <button onClick={handleNext} className={styles.navBtn}>
-                    <ChevronDown size={24} />
-                    <span className={styles.navLabel}>NEXT</span>
-                  </button>
-                </div>
-
-                {isSwitching && (
-                  <div className={styles.miniLoader}>
-                    <div className={styles.spinner}></div>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-
-            <motion.div
-              style={{ opacity: heroOpacity }}
-              className={styles.heroSocials}
-            >
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><Twitter size={20} /></a>
-            </motion.div>
-          </section>
-        </div>
-
-        {/* Featured Menu Cards Section */}
-        <section id="menu" className={styles.contentSection}>
+        {/* Hero Section */}
+        <section className={styles.hero}>
+          <img
+            src={siteConfig.heroImage || "https://storage.googleapis.com/banani-generated-images/generated-images/de63915b-8f34-47fe-bddd-6e1f90159747.jpg"}
+            className={styles.heroBg}
+            alt="Cozy cafe interior"
+          />
+          <div className={styles.heroOverlay}></div>
           <div className="container">
-            <div className={styles.sectionHeading}>
-              <span>Discover</span>
-              <h2>Our Signature Selection</h2>
+            <motion.div
+              className={styles.heroContent}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className={styles.heroTitle}>
+                {siteConfig.welcome || "A Warm Welcome in Every Cup"}
+              </h1>
+              <p className={styles.heroSubtitle}>
+                {siteConfig.heroSubtitle || "Experience the coziest corner in town. Hand-crafted coffee, fresh pastries, and a space designed for connection."}
+              </p>
+              <Link href="#menu" className="btn btn-primary">
+                View Our Menu <ArrowRight size={20} />
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Story Section */}
+        <section className="section">
+          <div className="container">
+            <div className="grid-2">
+              <motion.div
+                className={styles.textContent}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <h3>More Than Just Coffee</h3>
+                <p>
+                  At Cafe Davina, we believe that a coffee shop should be an extension of your living room. A place where the lighting is always warm, the seats are always comfortable, and the smiles are genuine.
+                </p>
+                <p>
+                  Whether you're looking for a quiet spot to focus on your work, or a vibrant space to catch up with old friends, we've crafted our environment to suit your every mood. Come for the coffee, stay for the feeling.
+                </p>
+                <Link href="/about" className={styles.btnText}>
+                  Read Our Story <ChevronRight size={20} />
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <img
+                  src="https://storage.googleapis.com/banani-generated-images/generated-images/a604cbb0-d28f-4f46-ba64-3d4df5bce336.jpg"
+                  className={styles.storyImg}
+                  alt="Friends at Cafe Davina"
+                />
+              </motion.div>
             </div>
-            <div className={styles.featuredMenuGrid}>
+          </div>
+        </section>
+
+        {/* Menu/Favorites Section */}
+        <section id="menu" className="section section-alt">
+          <div className="container">
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Customer Favorites</h2>
+              <p className={styles.sectionDesc}>
+                Handpicked selections from our seasonal menu, crafted with love and premium ingredients.
+              </p>
+            </div>
+            <div className="grid-4">
               {menuItems.slice(0, 4).map((item, idx) => (
                 <motion.div
                   key={item.id}
-                  className={styles.menuFeatureCard}
-                  initial={{ opacity: 0, y: 30 }}
+                  className={styles.menuCard}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
                 >
-                  <div className={styles.menuFeatureImage}>
-                    <img src={item.image} alt={item.name} />
-                  </div>
-                  <div className={styles.menuFeatureContent}>
-                    <h3>{item.name}</h3>
-                    <p>{item.description}</p>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className={styles.menuFeaturePrice}>{item.price}</span>
-                      <Link href={`/product/${item.id}`} className={styles.detailLink}>
-                        View Details <ArrowRight size={16} />
-                      </Link>
+                  <img src={item.image} className={styles.menuImg} alt={item.name} />
+                  <div className={styles.menuContent}>
+                    <div className={styles.menuHeader}>
+                      <div className={styles.menuTitle}>{item.name}</div>
+                      <div className={styles.menuPrice}>{item.price}</div>
                     </div>
+                    <p className={styles.menuDesc}>{item.description}</p>
+                    <Link href="/booking" className={styles.btnText}>Order Now</Link>
                   </div>
                 </motion.div>
               ))}
-              {menuItems.length === 0 && (
-                <p style={{ textAlign: 'center', gridColumn: '1/-1', opacity: 0.5 }}>No menu items configured yet.</p>
-              )}
             </div>
           </div>
         </section>
 
-        {/* Ingredients Section */}
-        <section id="ingredients" className={`${styles.contentSection} ${styles.altBg}`}>
+        {/* Space/Experience Section */}
+        <section className="section">
           <div className="container">
-            <div className={styles.sectionHeading}>
-              <span>Wholesome</span>
-              <h2>Ingredients & Benefits</h2>
-            </div>
-            <div className={styles.ingredientsGrid}>
-              {[
-                { name: 'Salmon', benefit: 'Rich in Omega-3 fatty acids for heart health.' },
-                { name: 'Avocado', benefit: 'Healthy fats and fiber for sustained energy.' },
-                { name: 'Citrus', benefit: 'High in Vitamin C to boost immunity.' },
-                { name: 'Herbs', benefit: 'Natural antioxidants and deep flavor.' }
-              ].map((item, i) => (
-                <div key={i} className={styles.ingredientCard}>
-                  <div className={styles.ingredientIcon}><Leaf /></div>
-                  <h4>{item.name}</h4>
-                  <p>{item.benefit}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Nutrition Section */}
-        <section id="nutrition" className={styles.contentSection}>
-          <div className="container">
-            <div className={styles.nutritionLayout}>
-              <div className={styles.nutritionLabel}>
-                <h3>Nutrition Facts</h3>
-                <div className={styles.labelDivider}></div>
-                <div className={styles.labelItem}><span>Calories</span> <span>450</span></div>
-                <div className={styles.labelItem}><span>Total Fat</span> <span>22g</span></div>
-                <div className={styles.labelItem}><span>Protein</span> <span>35g</span></div>
-                <div className={styles.labelItem}><span>Carbs</span> <span>12g</span></div>
-                <div className={styles.labelItem}><span>Fiber</span> <span>8g</span></div>
-              </div>
-              <div className={styles.nutritionIntro}>
-                <h2>Healthy & Balanced</h2>
-                <p>We believe that food should not only taste good but also feel good. Each serving is designed to provide a balanced macro-nutrient profile.</p>
-                <Link href="/booking" className="btn btn-primary">Book Now</Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Reviews Section */}
-        <section id="reviews" className={`${styles.contentSection} ${styles.altBg}`}>
-          <div className="container">
-            <div className={styles.sectionHeading}>
-              <span>Voices</span>
-              <h2>Wall of Love</h2>
-            </div>
-            <div className={styles.reviewsGrid}>
-              {[1, 2, 3].map(i => (
-                <div key={i} className={styles.reviewCard}>
-                  <MessageSquare className={styles.reviewIcon} />
-                  <p>"Absolutely stunning experience! The parallax effects are cool, but the food is even better."</p>
-                  <div className={styles.reviewer}>
-                    <strong>Satisfied Guest</strong>
-                    <span>Food Lover</span>
+            <div className="grid-2" style={{ direction: 'rtl' }}>
+              <motion.div
+                className={styles.textContent}
+                style={{ direction: 'ltr' }}
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <h3>Space for Every Moment</h3>
+                <p>
+                  Whether you need a change of scenery for your workday or a cozy nook to unwind with a book, our space adapts to you. With plenty of power outlets, high-speed WiFi, and softer zones for relaxation, Cafe Davina is your home away from home.
+                </p>
+                <div className={styles.featuresList}>
+                  <div className={styles.featureItem}>
+                    <div className={styles.featureIcon}><Wifi size={24} /></div>
+                    <span>Fast WiFi</span>
+                  </div>
+                  <div className={styles.featureItem}>
+                    <div className={styles.featureIcon}><Armchair size={24} /></div>
+                    <span>Cozy Seating</span>
+                  </div>
+                  <div className={styles.featureItem}>
+                    <div className={styles.featureIcon}><Sun size={24} /></div>
+                    <span>Warm Vibes</span>
                   </div>
                 </div>
-              ))}
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                style={{ direction: 'ltr' }}
+              >
+                <img
+                  src="https://storage.googleapis.com/banani-generated-images/generated-images/aa22fa01-567b-402e-ad9e-cde85b3da042.jpg"
+                  className={styles.storyImg}
+                  alt="Workspace at Davina"
+                />
+              </motion.div>
             </div>
           </div>
         </section>
-
-        {/* FAQ Section */}
-        <section id="faq" className={styles.contentSection}>
+        {/* Visit/Contact Section */}
+        <section id="location" className="section">
           <div className="container">
-            <div className={styles.sectionHeading}>
-              <span>Questions</span>
-              <h2>Common Inquiries</h2>
-            </div>
-            <div className={styles.faqList}>
-              {[
-                { q: "Is the salmon wild-caught?", a: "Yes, we source all our salmon sustainably from local fisheries." },
-                { q: "Do you have gluten-free options?", a: "Most of our dishes can be prepared gluten-free upon request." },
-                { q: "Can I book a private event?", a: "Absolutely! Please contact us via phone or email for inquiries." }
-              ].map((item, i) => (
-                <div key={i} className={styles.faqItem}>
-                  <div className={styles.faqHeader}>
-                    <h4>{item.q}</h4>
-                    <HelpCircle size={20} />
+            <div className={styles.visitContainer}>
+              <div className={styles.visitInfo}>
+                <h2 className={styles.visitTitle}>Come say hello.</h2>
+                <div className={styles.visitList}>
+                  <div className={styles.visitItem}>
+                    <div className={styles.visitIcon}><MapPin size={24} /></div>
+                    <div className={styles.visitText}>
+                      <h4>Address</h4>
+                      <p>{siteConfig.address}</p>
+                    </div>
                   </div>
-                  <p className={styles.faqAnswer}>{item.a}</p>
+                  <div className={styles.visitItem}>
+                    <div className={styles.visitIcon}><Clock size={24} /></div>
+                    <div className={styles.visitText}>
+                      <h4>Opening Hours</h4>
+                      <p>{siteConfig.hours}</p>
+                    </div>
+                  </div>
+                  <div className={styles.visitItem}>
+                    <div className={styles.visitIcon}><Phone size={24} /></div>
+                    <div className={styles.visitText}>
+                      <h4>Contact</h4>
+                      <p>{siteConfig.phone}<br />{siteConfig.email}</p>
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Final CTA */}
-        <section id="contact" className={styles.ctaSection}>
-          <div className="container text-center">
-            <h2>{siteConfig.welcome}</h2>
-            <p>Join us at Cafe Da Vina for a modern fusion experience.</p>
-            <div className={styles.ctaButtons}>
-              <Link href="/booking" className="btn btn-primary">Book a Table Now</Link>
-              <a href={`tel:${siteConfig.phone}`} className="btn btn-outline">Call Us: {siteConfig.phone}</a>
-            </div>
-            <div className={`${styles.storeStatus}`}>
-              <Clock size={20} />
-              <span>{siteConfig.hours}</span>
+              </div>
+              <div className={styles.visitMap}>
+                <div className={styles.mapPlaceholder}>
+                  <MapPin size={48} />
+                  <span>Interactive Map Placeholder</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>

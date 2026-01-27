@@ -1,0 +1,514 @@
+<div class="export-wrapper"
+style="
+ width: 1440px;
+min-height: 812px;
+position: relative;
+font-family: var(--font-family-body);
+background-color: var(--background);
+"
+><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=Geist:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=PT+Serif:wght@400;700&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Shantell+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+rel="stylesheet"
+
+/><html><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Cafe Davina</title><style>* {
+    box-sizing: border-box;
+}
+
+.export-wrapper {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family-body);
+    background-color: var(--background);
+    color: var(--foreground);
+    overflow-x: hidden;
+}
+
+</style><style id="nav-styles">.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    background-color: var(--background);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--foreground);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--muted-foreground);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.nav-item.active {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.btn-nav {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+}
+
+</style><style id="hero-styles">.hero {
+    position: relative;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+    color: white;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.hero-title {
+    font-size: 56px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    line-height: 1.1;
+}
+
+.hero-subtitle {
+    font-size: 20px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+.btn-hero {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    padding: 16px 32px;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+</style><style id="section-styles">.section {
+    padding: 96px 48px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.section-alt {
+    background-color: var(--secondary);
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 64px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--foreground);
+}
+
+.section-desc {
+    font-size: 18px;
+    color: var(--muted-foreground);
+    line-height: 1.6;
+}
+
+.text-content h3 {
+    font-size: 32px;
+    margin-bottom: 24px;
+    color: var(--foreground);
+}
+
+.text-content p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted-foreground);
+    margin-bottom: 24px;
+}
+
+.story-img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+}
+
+</style><style id="menu-styles">.menu-card {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.menu-content {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.menu-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--card-foreground);
+}
+
+.menu-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.menu-desc {
+    font-size: 14px;
+    color: var(--muted-foreground);
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.btn-text {
+    margin-top: auto;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--primary);
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+</style><style id="footer-styles">.footer {
+    background-color: var(--foreground);
+    color: var(--background);
+    padding: 80px 48px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 64px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.footer-brand h4 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.footer-brand p {
+    opacity: 0.7;
+    line-height: 1.6;
+    max-width: 300px;
+}
+
+.footer-col h5 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.footer-link {
+    display: block;
+    color: var(--background);
+    opacity: 0.7;
+    text-decoration: none;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 64px;
+    padding-top: 32px;
+    text-align: center;
+    opacity: 0.4;
+    font-size: 13px;
+}
+
+</style></head><body><nav class="navbar"><div class="logo" data-media-type="banani-button"><div style="
+ width: 32px;
+height: 32px;
+background: var(--primary);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+"
+><div style="
+ width: 20px;
+height: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+"
+><iconify-icon icon="lucide:coffee"
+style="font-size: 20px; color: white"
+></iconify-icon></div></div>Cafe Davina </div><div class="nav-links"><a class="nav-item active" data-media-type="banani-button">Home</a><a class="nav-item" data-media-type="banani-button">Menu</a><a class="nav-item" data-media-type="banani-button">Story</a><a class="nav-item" data-media-type="banani-button">Gallery</a></div><button class="btn-nav" data-media-type="banani-button">Visit Us </button></nav><div class="hero"><img src="https://storage.googleapis.com/banani-generated-images/generated-images/de63915b-8f34-47fe-bddd-6e1f90159747.jpg"
+data-aspect-ratio="21:9"
+data-query="warm cozy cafe interior with people chatting soft lighting wooden furniture coffee shop aesthetic"
+class="hero-bg"
+alt="Cozy cafe interior"
+/><div class="hero-overlay"></div><div class="hero-content"><h1 class="hero-title">A Warm Welcome in Every Cup</h1><p class="hero-subtitle">Experience the coziest corner in town. Hand-crafted coffee,
+fresh pastries,
+and a space designed for connection. </p><button class="btn-hero" data-media-type="banani-button">View Our Menu <div style="
+ width: 20px;
+height: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+"
+><iconify-icon icon="lucide:arrow-right"
+style="font-size: 20px; color: currentColor"
+></iconify-icon></div></button></div></div><div class="section"><div class="grid-2"><div class="text-content"><h3>More Than Just Coffee</h3><p>At Cafe Davina,
+we believe that a coffee shop should be an extension of your living room. A place where the lighting is always warm,
+the seats are always comfortable,
+and the smiles are genuine. </p><p>Whether you're looking for a quiet spot to focus on your work, or
+ a vibrant space to catch up with old friends,
+we've crafted our
+ environment to suit your every mood. Come for the coffee,
+stay for the feeling. </p><button class="btn-text"
+style="font-size: 16px; margin-top: 16px"
+data-media-type="banani-button"
+>Read Our Story <div style="
+ width: 16px;
+height: 16px;
+display: flex;
+align-items: center;
+justify-content: center;
+"
+><iconify-icon icon="lucide:chevron-right"
+style="font-size: 16px; color: currentColor"
+></iconify-icon></div></button></div><img src="https://storage.googleapis.com/banani-generated-images/generated-images/a604cbb0-d28f-4f46-ba64-3d4df5bce336.jpg"
+data-aspect-ratio="4:5"
+data-query="friends laughing drinking coffee in a warm cafe setting lifestyle photography"
+class="story-img"
+alt="Friends at Cafe Davina"
+/></div></div><div class="section section-alt"><div class="section-header"><h2 class="section-title">Customer Favorites</h2><p class="section-desc">Handpicked selections from our seasonal menu,
+crafted with love and premium ingredients. </p></div><div class="grid-4">< !-- Item 1 --><div class="menu-card" data-media-type="banani-button"><img src="https://storage.googleapis.com/banani-generated-images/generated-images/01b06483-8231-475b-a470-569a2f9ca68b.jpg"
+data-aspect-ratio="4:3"
+data-query="latte art in ceramic cup on wooden table close up"
+class="menu-img"
+alt="Signature Latte"
+/><div class="menu-content"><div class="menu-header"><div class="menu-title">Signature Latte</div><div class="menu-price">$4.50</div></div><p class="menu-desc">Rich espresso with perfectly steamed milk and a touch of vanilla bean. </p><button class="btn-text" data-media-type="banani-button">Order Now </button></div></div>< !-- Item 2 --><div class="menu-card" data-media-type="banani-button"><img src="https://storage.googleapis.com/banani-generated-images/generated-images/f7ef4c93-bcdb-47de-8586-bd0389510ac1.jpg"
+data-aspect-ratio="4:3"
+data-query="fresh croissant on a white plate cafe setting"
+class="menu-img"
+alt="Butter Croissant"
+/><div class="menu-content"><div class="menu-header"><div class="menu-title">Butter Croissant</div><div class="menu-price">$3.75</div></div><p class="menu-desc">Freshly baked every morning,
+flaky,
+golden,
+and impossibly buttery. </p><button class="btn-text" data-media-type="banani-button">Order Now </button></div></div>< !-- Item 3 --><div class="menu-card" data-media-type="banani-button"><img src="https://storage.googleapis.com/banani-generated-images/generated-images/516bd49b-a595-49eb-b462-f5e0ab2d8c2e.jpg"
+data-aspect-ratio="4:3"
+data-query="avocado toast with poached egg on rustic bread"
+class="menu-img"
+alt="Avo Toast"
+/><div class="menu-content"><div class="menu-header"><div class="menu-title">Davina's Toast</div>
+ <div class="menu-price">$8.50</div></div><p class="menu-desc">Sourdough topped with smashed avocado,
+poached egg,
+and chili flakes. </p><button class="btn-text" data-media-type="banani-button">Order Now </button></div></div>< !-- Item 4 --><div class="menu-card" data-media-type="banani-button"><img src="https://storage.googleapis.com/banani-generated-images/generated-images/fb04e085-47a1-422b-a170-78323520f01c.jpg"
+data-aspect-ratio="4:3"
+data-query="iced matcha latte in tall glass cafe table"
+class="menu-img"
+alt="Iced Matcha"
+/><div class="menu-content"><div class="menu-header"><div class="menu-title">Iced Matcha</div><div class="menu-price">$5.00</div></div><p class="menu-desc">Premium ceremonial grade matcha whisked with oat milk and ice. </p><button class="btn-text" data-media-type="banani-button">Order Now </button></div></div></div></div><div class="section"><div class="grid-2" style="direction: rtl"><div class="text-content" style="direction: ltr"><h3>Space for Every Moment</h3><p>Whether you need a change of scenery for your workday or a cozy nook to unwind with a book,
+our space adapts to you. With plenty of power outlets,
+high-speed WiFi,
+and softer zones for relaxation,
+Cafe Davina is your home away from home. </p><div style="display: flex; gap: 24px; margin-top: 32px"><div style="display: flex; gap: 12px; align-items: center"><div style="
+ width: 24px;
+height: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+"
+><iconify-icon icon="lucide:wifi"
+style="font-size: 24px; color: var(--primary)"
+></iconify-icon></div><span style="font-weight: 500; font-size: 15px">Fast WiFi</span></div><div style="display: flex; gap: 12px; align-items: center"><div style="
+ width: 24px;
+height: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+"
+><iconify-icon icon="lucide:armchair"
+style="font-size: 24px; color: var(--primary)"
+></iconify-icon></div><span style="font-weight: 500; font-size: 15px"
+>Cozy Seating</span></div><div style="display: flex; gap: 12px; align-items: center"><div style="
+ width: 24px;
+height: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+"
+><iconify-icon icon="lucide:sun"
+style="font-size: 24px; color: var(--primary)"
+></iconify-icon></div><span style="font-weight: 500; font-size: 15px"
+>Warm Vibes</span></div></div></div><img src="https://storage.googleapis.com/banani-generated-images/generated-images/aa22fa01-567b-402e-ad9e-cde85b3da042.jpg"
+data-aspect-ratio="4:5"
+data-query="people working on laptops in a stylish cafe with plants"
+class="story-img"
+style="direction: ltr"
+alt="Workspace at Davina"
+/></div></div><footer class="footer"><div class="footer-grid"><div class="footer-brand"><h4>Cafe Davina</h4><p>Your neighborhood sanctuary for great coffee,
+fresh food,
+and warm company. </p><div style="display: flex; gap: 16px; margin-top: 24px"><div style="
+ width: 24px;
+height: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0.8;
+"
+><iconify-icon icon="lucide:instagram"
+style="font-size: 24px; color: white"
+></iconify-icon></div><div style="
+ width: 24px;
+height: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0.8;
+"
+><iconify-icon icon="lucide:facebook"
+style="font-size: 24px; color: white"
+></iconify-icon></div><div style="
+ width: 24px;
+height: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0.8;
+"
+><iconify-icon icon="lucide:twitter"
+style="font-size: 24px; color: white"
+></iconify-icon></div></div></div><div class="footer-col"><h5>Discover</h5><a href="#" class="footer-link" data-media-type="banani-button"
+>Home</a><a href="#" class="footer-link" data-media-type="banani-button"
+>Full Menu</a><a href="#" class="footer-link" data-media-type="banani-button"
+>Our Story</a><a href="#" class="footer-link" data-media-type="banani-button"
+>Careers</a></div><div class="footer-col"><h5>Visit</h5><a href="#" class="footer-link" data-media-type="banani-button"
+>123 Coffee Lane</a><a href="#" class="footer-link" data-media-type="banani-button"
+>Jakarta,
+ID 10220</a><a href="#" class="footer-link" data-media-type="banani-button"
+
+>Get Directions</a></div><div class="footer-col"><h5>Hours</h5><div class="footer-link" style="cursor: default; opacity: 0.7">Mon-Fri: 7am - 9pm </div><div class="footer-link" style="cursor: default; opacity: 0.7">Sat-Sun: 8am - 10pm </div></div></div><div class="footer-bottom">© 2024 Cafe Davina. All rights reserved. </div></footer></body></html><script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script><style> :root {
+    --background: #fff7f1;
+    --foreground: #3b2f2f;
+    --border: #00000014;
+    --input: #fff2ea;
+    --primary: #b9653a;
+    --primary-foreground: #ffffff;
+    --secondary: #f4e6dc;
+    --secondary-foreground: #5b4540;
+    --muted: #f0e9e6;
+    --muted-foreground: #8a7a78;
+    --success: #c7efd9;
+    --success-foreground: #195032;
+    --accent: #f2b880;
+    --accent-foreground: #392210;
+    --destructive: #e86b5a;
+    --destructive-foreground: #ffffff;
+    --warning: #ffd8a8;
+    --warning-foreground: #5a3816;
+    --card: #ffffff;
+    --card-foreground: #3b2f2f;
+    --sidebar: #fff3e8;
+    --sidebar-foreground: #4a3834;
+    --sidebar-primary: #b9653a;
+    --sidebar-primary-foreground: #ffffff;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --font-family-body: Inter;
+}
+
+</style></div>

@@ -1,170 +1,78 @@
 .footer {
-    background-color: var(--bg-secondary);
-    padding: 5rem 0 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: var(--foreground);
+    color: var(--background);
+    padding: 80px 0 40px 0;
 }
 
-.grid {
+.footerGrid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1.5fr;
-    gap: 4rem;
-    margin-bottom: 4rem;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 64px;
 }
 
-.logo {
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: var(--accent-primary);
+.footerBrand h4 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
 }
 
-.description {
-    color: var(--text-muted);
-    max-width: 350px;
-    margin-bottom: 2rem;
+.footerBrand p {
+    opacity: 0.7;
+    line-height: 1.6;
+    max-width: 300px;
 }
 
-.socials {
+.socialLinks {
     display: flex;
-    gap: 1.5rem;
+    gap: 16px;
+    margin-top: 24px;
 }
 
-.socials a {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-primary);
-    box-shadow: var(--shadow);
+.socialLinks a {
+    opacity: 0.7;
+    transition: opacity 0.2s;
 }
 
-.socials a:hover {
-    background-color: var(--accent-primary);
-    color: var(--white);
+.socialLinks a:hover {
+    opacity: 1;
 }
 
-.links h4,
-.contact h4 {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    font-family: var(--font-body);
+.footerCol h5 {
+    font-size: 16px;
     font-weight: 600;
+    margin-bottom: 24px;
 }
 
-.links ul li {
-    margin-bottom: 0.8rem;
+.footerLink {
+    display: block;
+    opacity: 0.7;
+    margin-bottom: 16px;
+    font-size: 14px;
+    transition: opacity 0.2s;
 }
 
-.contact ul li {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
+.footerLink:hover {
+    opacity: 1;
 }
 
-.statusBadge {
-    margin-top: 1.5rem !important;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.9rem;
-}
-
-.dotOpen {
-    width: 10px;
-    height: 10px;
-    background: #4caf50;
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
-    animation: pulse 2s infinite;
-}
-
-.dotClosed {
-    width: 10px;
-    height: 10px;
-    background: #f44336;
-    border-radius: 50%;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    50% {
-        transform: scale(1.4);
-        opacity: 0.6;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.bottom {
-    margin-top: 4rem;
-    padding-top: 2rem;
+.footerBottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 32px;
     text-align: center;
-    font-size: 0.9rem;
-    color: var(--text-muted);
+    opacity: 0.4;
+    font-size: 13px;
 }
 
-@media (max-width: 768px) {
-    .footer {
-        padding: 4rem 0 2rem;
-        text-align: center;
+@media (max-width: 1024px) {
+    .footerGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
     }
+}
 
-    .grid {
+@media (max-width: 640px) {
+    .footerGrid {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
-        margin-bottom: 3rem;
-    }
-
-    .logo {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .description {
-        margin: 0 auto 1.5rem;
-        font-size: 0.9rem;
-    }
-
-    .socials {
-        justify-content: center;
-        gap: 1rem;
-    }
-
-    .socials a {
-        width: 36px;
-        height: 36px;
-    }
-
-    .links h4,
-    .contact h4 {
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-    }
-
-    .contact ul li {
-        justify-content: center;
-        font-size: 0.9rem;
-    }
-
-    .statusBadge {
-        justify-content: center;
-        margin-top: 1rem !important;
-    }
-
-    .bottom {
-        margin-top: 3rem;
-        font-size: 0.8rem;
     }
 }

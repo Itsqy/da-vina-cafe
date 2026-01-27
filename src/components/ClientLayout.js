@@ -11,7 +11,7 @@ export default function ClientLayout({ children }) {
     return (
         <>
             {!isAdminRequest && <Navbar />}
-            <main style={!isAdminRequest ? { minHeight: '80vh', paddingTop: '80px' } : {}}>
+            <main>
                 {children}
             </main>
             {!isAdminRequest && <Footer />}
