@@ -16,6 +16,17 @@
     border-bottom: 1px solid var(--border);
 }
 
+.darkTheme:not(.scrolled) {
+    background-color: transparent;
+}
+
+.darkTheme:not(.scrolled) .logo,
+.darkTheme:not(.scrolled) .navItem,
+.darkTheme:not(.scrolled) .menuToggle {
+    color: var(--foreground);
+    opacity: 1;
+}
+
 .navContainer {
     display: flex;
     justify-content: space-between;
@@ -122,6 +133,17 @@
 
 @media (max-width: 640px) {
     .logo {
-        font-size: 20px;
+        font-size: 18px;
+        gap: 8px;
+    }
+
+    .navActions {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 400px) {
+    .navActions a {
+        display: none;
     }
 }

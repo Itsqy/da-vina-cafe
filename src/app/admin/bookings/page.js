@@ -177,7 +177,7 @@ export default function BookingsManagementPage() {
                             </div>
                         </div>
 
-                        <div style={{ overflow: 'auto' }}>
+                        <div className={styles.tableContainer}>
                             <table className={styles.table}>
                                 <thead>
                                     <tr>
@@ -192,16 +192,16 @@ export default function BookingsManagementPage() {
                                 <tbody>
                                     {filteredBookings.map(b => (
                                         <tr key={b.id}>
-                                            <td style={{ fontWeight: '600' }}>{b.name || b.email.split('@')[0]}</td>
-                                            <td>{b.email}</td>
-                                            <td>{b.date}, {b.time}</td>
-                                            <td>{b.guests} Guests</td>
-                                            <td>
+                                            <td data-label="Customer" style={{ fontWeight: '600' }}>{b.name || b.email.split('@')[0]}</td>
+                                            <td data-label="Email">{b.email}</td>
+                                            <td data-label="Date & Time">{b.date}, {b.time}</td>
+                                            <td data-label="Guests">{b.guests} Guests</td>
+                                            <td data-label="Status">
                                                 <span className={`${styles.statusPill} ${b.status === 'confirmed' ? styles.statusConfirmed : styles.statusPending}`}>
                                                     {b.status === 'confirmed' ? 'Confirmed' : 'Pending'}
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td data-label="Actions">
                                                 <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
                                                     {b.status !== 'confirmed' && (
                                                         <button

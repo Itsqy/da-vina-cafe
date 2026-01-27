@@ -124,7 +124,7 @@ export default function BookingPage() {
 
     return (
         <div className={styles.bookingPage}>
-            <Navbar />
+            <Navbar theme="dark" />
 
             <header className={styles.header}>
                 <div className="container">

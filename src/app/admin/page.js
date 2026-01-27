@@ -155,28 +155,30 @@ export default function AdminDashboard() {
                                     View All <ArrowRight size={12} />
                                 </button>
                             </div>
-                            <table className={styles.table}>
-                                <thead>
-                                    <tr>
-                                        <th>Customer</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {bookings.map(b => (
-                                        <tr key={b.id}>
-                                            <td>{b.email.split('@')[0]}</td>
-                                            <td>{b.date}</td>
-                                            <td>
-                                                <span className={`${styles.statusPill} ${b.status === 'confirmed' ? styles.statusConfirmed : styles.statusPending}`}>
-                                                    {b.status === 'confirmed' ? 'Confirmed' : 'Pending'}
-                                                </span>
-                                            </td>
+                            <div className={styles.tableContainer}>
+                                <table className={styles.table}>
+                                    <thead>
+                                        <tr>
+                                            <th>Customer</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {bookings.map(b => (
+                                            <tr key={b.id}>
+                                                <td data-label="Customer">{b.email.split('@')[0]}</td>
+                                                <td data-label="Date">{b.date}</td>
+                                                <td data-label="Status">
+                                                    <span className={`${styles.statusPill} ${b.status === 'confirmed' ? styles.statusConfirmed : styles.statusPending}`}>
+                                                        {b.status === 'confirmed' ? 'Confirmed' : 'Pending'}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </section>
 
                         {/* Signature Selection Summary */}
@@ -190,24 +192,26 @@ export default function AdminDashboard() {
                                     Manage Menu <ArrowRight size={12} />
                                 </button>
                             </div>
-                            <table className={styles.table}>
-                                <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Category</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {menuItems.map(item => (
-                                        <tr key={item.id}>
-                                            <td style={{ fontWeight: '600' }}>{item.name}</td>
-                                            <td><span className={styles.badgeMuted}>{item.category}</span></td>
-                                            <td>{item.price}</td>
+                            <div className={styles.tableContainer}>
+                                <table className={styles.table}>
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {menuItems.map(item => (
+                                            <tr key={item.id}>
+                                                <td data-label="Item" style={{ fontWeight: '600' }}>{item.name}</td>
+                                                <td data-label="Category"><span className={styles.badgeMuted}>{item.category}</span></td>
+                                                <td data-label="Price">{item.price}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </section>
                     </div>
 

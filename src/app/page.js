@@ -169,7 +169,7 @@ export default function Home() {
                       <div className={styles.menuPrice}>{item.price}</div>
                     </div>
                     <p className={styles.menuDesc}>{item.description}</p>
-                    <Link href="/booking" className={styles.btnText}>Order Now</Link>
+                    <Link href={`/product/${item.id}`} className={styles.btnText}>Order Now</Link>
                   </div>
                 </motion.div>
               ))}

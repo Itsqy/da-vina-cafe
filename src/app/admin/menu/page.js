@@ -203,7 +203,7 @@ export default function MenuManagementPage() {
                             </div>
                         </div>
 
-                        <div style={{ overflow: 'auto' }}>
+                        <div className={styles.tableContainer}>
                             <table className={styles.table}>
                                 <thead>
                                     <tr>
@@ -217,15 +217,15 @@ export default function MenuManagementPage() {
                                 <tbody>
                                     {filteredItems.map(item => (
                                         <tr key={item.id}>
-                                            <td style={{ fontWeight: '600' }}>{item.name}</td>
-                                            <td><span className={styles.badgeMuted}>{item.category}</span></td>
-                                            <td>{item.price}</td>
-                                            <td>
+                                            <td data-label="Name" style={{ fontWeight: '600' }}>{item.name}</td>
+                                            <td data-label="Category"><span className={styles.badgeMuted}>{item.category}</span></td>
+                                            <td data-label="Price">{item.price}</td>
+                                            <td data-label="Status">
                                                 <span className={`${styles.statusPill} ${item.status === 'Featured' ? styles.statusConfirmed : styles.statusPending}`}>
                                                     {item.status || 'Visible'}
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td data-label="Actions">
                                                 <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
                                                     <button className={styles.badgeMuted} onClick={() => openEditModal(item)}>
                                                         <Edit2 size={12} /> Edit

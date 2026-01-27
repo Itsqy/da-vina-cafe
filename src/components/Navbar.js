@@ -11,7 +11,7 @@ const NAV_LINKS = [
     { label: 'Gallery', href: '/gallery' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ theme = 'light' }) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -28,7 +28,7 @@ export default function Navbar() {
     };
 
     return (
-        <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''}`}>
+        <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''} ${theme === 'dark' ? styles.darkTheme : ''}`}>
             <div className={`container ${styles.navContainer}`}>
                 <Link href="/" className={styles.logo} onClick={handleLinkClick}>
                     <div className={styles.logoMark}>
