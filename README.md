@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Documentation
+
+For a detailed breakdown of our implementation, design, and SEO approach, refer to the [Project Strategy Guide](./docs/PROJECT_STRATEGY.md).
+
 ## Getting Started
 
 First, run the development server:
